@@ -23,5 +23,7 @@ Supported platforms are Linux, Windows, OS X, *BSD, and Plan 9.''',
                  'Operating System :: POSIX :: Linux',
                  'Operating System :: POSIX :: Other',
                  'Programming Language :: Python',
+                 'Programming Language :: Python :: 2',
+                 'Programming Language :: Python :: 3',
                  'Topic :: System']
 )

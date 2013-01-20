@@ -145,6 +145,6 @@ if __name__ == '__main__':
     up = uptime()
     if up is not None:
         h, m, s = up / 3600, up / 60 % 60, up % 60
-        print 'Uptime: %02d:%02d:%02d (%.2f seconds).' % (h, m, s, up)
+        sys.stdout.write('Uptime: %02d:%02d:%02d (%.2f seconds).\n' % (h, m, s, up))
     else:
-        print 'Unable to determine uptime. Patches welcome.'
+        sys.stdout.write('Unable to determine uptime. Patches welcome.\n')
