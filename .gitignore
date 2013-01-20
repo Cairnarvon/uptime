@@ -1,0 +1,5 @@
+*.py[co]
+dist
+dist/*
+doc/_build
+MANIFEST
