@@ -78,6 +78,10 @@ def _uptime_bsd():
     libc.sysctlbyname('kern.boottime', buf, ctypes.byref(sz), None, 0)
     sec, usec = struct.unpack('@LL', buf.raw)
 
+    # OS X disagrees what that second value is
+    if usec > 1000000:
+        usec = 0.
+
     boottime = sec + usec / 1000000.
     up = time.time() - boottime
     return up if up > 0 else None
