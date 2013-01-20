@@ -41,7 +41,7 @@ shouldn't call them yourself, but they're here if you want to.
 
 .. function:: _uptime_bsd
 
-   BSD-specific uptime (including OS X). It uses ``sysctl`` (though the
+   BSD-specific uptime (including OS X). It uses ``sysctl`` (through the
    ``sysctlbyname(3)`` function) to figure out the system's boot time, which
    it then subtracts from the current time to find the uptime.
 
