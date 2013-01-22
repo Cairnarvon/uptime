@@ -21,6 +21,15 @@ reasonable version of Linux and BSD, every version of Windows since Windows
 2000, and Plan 9 From Bell Labs. It is known *not* to work on Syllable and RISC
 OS (patches welcome).
 
+.. warning::
+
+   This module depends very heavily on :mod:`ctypes`. It has become painfully
+   apparent that many less mainstream platforms ship with a broken version of
+   this standard library module, either accidentally or deliberately_. Please
+   test your Python installation before using :mod:`uptime`.
+
+.. _deliberately: https://developers.google.com/appengine/kb/libraries
+
 The one you want
 ----------------
 
