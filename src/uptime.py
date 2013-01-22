@@ -195,27 +195,11 @@ def _uptime_windows():
 
 def uptime():
     """Returns uptime in seconds if even remotely possible, or None if not."""
-    if sys.platform == 'linux2':
-        up = _uptime_linux()
-        if up is not None:
-            return up
-
-    if sys.platform == 'win32':
-        up = _uptime_windows()
-        if up is not None:
-            return up
-
-    if sys.platform == 'darwin' or 'bsd' in sys.platform:
-        up = _uptime_bsd()
-        if up is not None:
-            return up
-
-    if sys.platform == 'sunos5':
-        up = _uptime_solaris()
-        if up is not None:
-            return up
-
-    return _uptime_bsd() or _uptime_plan9() or \
+    return {'darwin': _uptime_osx,
+            'linux2': _uptime_linux,
+            'sunos5': _uptime_solaris,
+            'win32': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
+           _uptime_bsd() or _uptime_plan9() or \
            _uptime_linux() or _uptime_windows() or _uptime_solaris()
 
 
