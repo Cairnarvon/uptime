@@ -16,4 +16,4 @@ print uptime()
 
 Full documentation [here](http://packages.python.org/uptime/). Works with any version of Python from 2.5 on, including Python 3.
 
-Tested on Debian, FreeBSD, Windows XP, and Mac OS X Lion. Expected to work with every vaguely reasonable Linux and BSD, every Windows since Windows 2000, and Plan 9 From Bell Labs. Known *not* to work (yet) with Syllable, RISC OS, or Solaris. Patches welcome.
+Tested on Debian, FreeBSD, Windows XP, Mac OS X Lion, and OpenIndiana. Expected to work with every vaguely reasonable Linux and BSD, every Windows since Windows 2000, and Plan 9 From Bell Labs. Known *not* to work (yet) with Syllable or RISC OS. Patches welcome.

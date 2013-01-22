@@ -15,10 +15,11 @@ processes, because parsing ``uptime(1)``'s output is cheating.
 It also exposes various platform-specific helper functions, which you probably
 won't need.
 
-This module has been tested on Debian Linux, FreeBSD, NetBSD, Windows XP, and
-Mac OS X Lion. It is expected to work on every vaguely reasonable version of
-Linux and BSD, every version of Windows since Windows 2000, and Plan 9 From
-Bell Labs. It is known *not* to work on Syllable and RISC OS (patches welcome).
+This module has been tested on Debian Linux, FreeBSD, Windows XP, Mac OS X
+Lion, and OpenIndiana. It is additionally expected to work on every vaguely
+reasonable version of Linux and BSD, every version of Windows since Windows
+2000, and Plan 9 From Bell Labs. It is known *not* to work on Syllable and RISC
+OS (patches welcome).
 
 The one you want
 ----------------
@@ -62,6 +63,12 @@ You probably shouldn't call them yourself, but they're here if you want to.
 
    Plan 9 From Bell Labs. Reads ``/dev/time``, which contains the number of
    clock tics since boot and the number of clock ticks per seconds.
+
+.. function:: _uptime_solaris
+
+   Solaris-specific uptime. This uses ``libkstat`` to find out the system's
+   boot time (``unix:0:system_misc:boot_time``), which it then subtracts from
+   the current time to find the uptime.
 
 .. function:: _uptime_syllable
 
