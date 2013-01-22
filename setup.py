@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='uptime',
-    version='1.0.1',
+    version='1.1.0',
     description='Cross-platform uptime library',
     long_description='''\
 This module provides a cross-platform way to retrieve system uptime.
