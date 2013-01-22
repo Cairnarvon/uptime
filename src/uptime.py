@@ -1,19 +1,22 @@
 #!/usr/bin/env python
 
+"""
+Provides a cross-platform way to figure out the system uptime.
+
+Should work on damned near any operating system you can realistically expect
+to be asked to write Python code for.
+If this module is invoked as a stand-alone script, it will print the current
+uptime in a human-readable format, or display an error message if it can't,
+to standard output.
+
+"""
+
 from __future__ import with_statement
 
 import ctypes
 import struct
 import sys
 import time
-
-"""
-Contains a bunch of functions that implement platform-specific ways to figure
-out the system uptime, and one that uses all of them to figure out yours.
-In principle, none of these functions create new processes or raise any
-exceptions. They all return a float representing the number of seconds of
-uptime, or None if they couldn't figure it out.
-"""
 
 def _uptime_linux():
     """Returns uptime in seconds or None, on Linux."""
