@@ -119,41 +119,12 @@ def _uptime_solaris():
     boottime = None
 
     # Unfortunately, getting at it isn't perfectly straightforward.
-    # But we're going to do this in Python if it kills us.
-
     # First, let's pretend to be kstat.h
 
     # Constant
     KSTAT_STRLEN = 31   # According to every kstat.h I could find.
 
-    # Structs
-    class kstat_t(ctypes.Structure):
-        # One of kstat_t's fields is a pointer to kstat_t, so...
-        pass
-    kstat_t._fields_ = [('ks_crtime', ctypes.c_uint64),
-                        ('ks_next', ctypes.POINTER(kstat_t)),
-                        ('ks_kid', ctypes.c_int),
-                        ('ks_module', ctypes.c_char * KSTAT_STRLEN),
-                        ('ks_resv', ctypes.c_char),
-                        ('ks_instance', ctypes.c_int),
-                        ('ks_name', ctypes.c_char * KSTAT_STRLEN),
-                        ('ks_type', ctypes.c_char),
-                        ('ks_class', ctypes.c_char * KSTAT_STRLEN),
-                        ('ks_flags', ctypes.c_char),
-                        ('ks_data', ctypes.c_voidp),
-                        ('ks_ndata', ctypes.c_uint),
-                        ('ks_data_size', ctypes.c_uint),
-                        ('ks_snaptime', ctypes.c_uint64),
-                        ('ks_update', ctypes.c_void_p),
-                        ('ks_private', ctypes.c_void_p),
-                        ('ks_snapshot', ctypes.c_void_p),
-                        ('ks_lock', ctypes.c_void_p)]
-
-    class kstat_ctl_t(ctypes.Structure):
-        _fields_ = [('kc_chain_id', ctypes.c_int),
-                    ('kc_chain', ctypes.POINTER(kstat_t)),
-                    ('kc_kd', ctypes.c_int)]
-
+    # Data structures
     class anon_union(ctypes.Union):
         # The ``value'' union in kstat_named_t actually has a bunch more
         # members, but we're only using it for boot_time, so we only need
@@ -167,18 +138,18 @@ def _uptime_solaris():
                     ('value', anon_union)]
 
     # Function signatures
-    kstat.kstat_open.restype = ctypes.POINTER(kstat_ctl_t)
-    kstat.kstat_lookup.restype = ctypes.POINTER(kstat_t)
-    kstat.kstat_lookup.argtypes = [ctypes.POINTER(kstat_ctl_t),
+    kstat.kstat_open.restype = ctypes.c_void_p
+    kstat.kstat_lookup.restype = ctypes.c_void_p
+    kstat.kstat_lookup.argtypes = [ctypes.c_void_p,
                                    ctypes.c_char_p,
                                    ctypes.c_int,
                                    ctypes.c_char_p]
     kstat.kstat_read.restype = ctypes.c_int
-    kstat.kstat_read.argtypes = [ctypes.POINTER(kstat_ctl_t),
-                                 ctypes.POINTER(kstat_t),
+    kstat.kstat_read.argtypes = [ctypes.c_void_p,
+                                 ctypes.c_void_p,
                                  ctypes.c_void_p]
     kstat.kstat_data_lookup.restype = ctypes.POINTER(kstat_named_t)
-    kstat.kstat_data_lookup.argtypes = [ctypes.POINTER(kstat_t),
+    kstat.kstat_data_lookup.argtypes = [ctypes.c_void_p,
                                         ctypes.c_char_p]
 
     # Now, let's do something useful.
@@ -196,7 +167,6 @@ def _uptime_solaris():
             boottime = data.contents.value.time
 
     # Clean-up.
-    # FIXME I don't know if this also frees the buffer allocated by kstat_read.
     kstat.kstat_close(kc)
 
     if boottime is not None:
