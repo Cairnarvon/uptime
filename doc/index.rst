@@ -71,7 +71,7 @@ You probably shouldn't call them yourself, but they're here if you want to.
 .. function:: _uptime_plan9
 
    Plan 9 From Bell Labs. Reads ``/dev/time``, which contains the number of
-   clock tics since boot and the number of clock ticks per seconds.
+   clock ticks since boot and the number of clock ticks per seconds.
 
 .. function:: _uptime_solaris
 

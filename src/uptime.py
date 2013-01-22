@@ -40,7 +40,7 @@ def _uptime_linux():
             return None
 
     if not hasattr(libc, 'sysinfo'):
-        # Not Linux
+        # Not Linux.
         return None
 
     buf = ctypes.create_string_buffer(128) # 64 suffices on 32-bit, whatever.
@@ -63,22 +63,22 @@ def _uptime_bsd():
             return None
     
     if not hasattr(libc, 'sysctlbyname'):
-        # Not BSD
+        # Not BSD.
         return None
 
-    # Determine how much space we need for the response
+    # Determine how much space we need for the response.
     sz = ctypes.c_uint(0)
     libc.sysctlbyname('kern.boottime', None, ctypes.byref(sz), None, 0)
     if sz.value != struct.calcsize('@LL'):
         # Unexpected, let's give up.
         return None
 
-    # For real now
+    # For real now.
     buf = ctypes.create_string_buffer(sz.value)
     libc.sysctlbyname('kern.boottime', buf, ctypes.byref(sz), None, 0)
     sec, usec = struct.unpack('@LL', buf.raw)
 
-    # OS X disagrees what that second value is
+    # OS X disagrees what that second value is.
     if usec > 1000000:
         usec = 0.
 
@@ -92,7 +92,7 @@ def _uptime_plan9():
     """Returns uptime in seconds or None, on Plan 9."""
     # Apparently Plan 9 only has Python 2.2, which I'm not prepared to
     # support. Maybe some Linuxes implement /dev/time, though, someone was
-    # taling about it somewhere.
+    # talking about it somewhere.
     try:
         with open('/dev/time', 'r') as f:
             # The time file holds one 32-bit number representing the sec-
@@ -106,7 +106,7 @@ def _uptime_plan9():
         return None
 
 def _uptime_solaris():
-    """Returns uptime in second or None, on Solaris."""
+    """Returns uptime in seconds or None, on Solaris."""
     try:
         kstat = ctypes.CDLL('libkstat.so')
     except OSError:
@@ -213,10 +213,10 @@ def _uptime_windows():
     if not hasattr(ctypes, 'windll') or not hasattr(ctypes.windll, 'kernel32'):
         return None
     if hasattr(ctypes.windll.kernel32, 'GetTickCount64'):
-        # Vista/Server 2008 or later
+        # Vista/Server 2008 or later.
         return ctypes.windll.kernel32.GetTickCount64() / 1000.
     if hasattr(ctypes.windll.kernel32, 'GetTickCount'):
-        # Win2k or later; gives wrong answers after 49.7 days
+        # Win2k or later; gives wrong answers after 49.7 days.
         return ctypes.windll.kernel32.GetTickCount() / 1000.
     return None
 
