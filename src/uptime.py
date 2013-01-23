@@ -195,7 +195,8 @@ def _uptime_windows():
 
 def uptime():
     """Returns uptime in seconds if even remotely possible, or None if not."""
-    return {'darwin': _uptime_osx,
+    return {'cygwin': _uptime_linux,
+            'darwin': _uptime_osx,
             'linux2': _uptime_linux,
             'sunos5': _uptime_solaris,
             'win32': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
