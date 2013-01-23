@@ -11,8 +11,6 @@ to standard output.
 
 """
 
-from __future__ import with_statement
-
 import ctypes
 import struct
 import sys
@@ -22,15 +20,17 @@ def _uptime_linux():
     """Returns uptime in seconds or None, on Linux."""
     # With procfs
     try:
-        with open('/proc/uptime', 'r') as f:
-            return float(f.readline().split()[0])
+        f = open('/proc/uptime', 'r')
+        up = float(f.readline().split()[0])
+        f.close()
+        return up
     except (IOError, ValueError):
         pass
 
     # Without procfs (really?)
     try:
         libc = ctypes.CDLL('libc.so')
-    except OSError:
+    except (OSError, RuntimeError):
         # Debian and derivatives do the wrong thing because /usr/lib/libc.so
         # is a GNU ld script rather than an ELF object. To get around this, we
         # have to be more specific.
@@ -39,7 +39,7 @@ def _uptime_linux():
         # this point we're already pretty sure this isn't Linux.
         try:
             libc = ctypes.CDLL('libc.so.6')
-        except OSError:
+        except (OSError, RuntimeError):
             return None
 
     if not hasattr(libc, 'sysinfo'):
@@ -57,12 +57,12 @@ def _uptime_bsd():
     """Returns uptime in seconds or None, on BSD (including OS X)."""
     try:
         libc = ctypes.CDLL('libc.so')
-    except OSError:
+    except (OSError, RuntimeError):
         # OS X; can't use ctypes.util.find_library because that creates
         # a new process on Linux, which is undesirable.
         try:
             libc = ctypes.CDLL('libc.dylib')
-        except OSError:
+        except (OSError, RuntimeError):
             return None
     
     if not hasattr(libc, 'sysctlbyname'):
@@ -97,14 +97,15 @@ def _uptime_plan9():
     # support. Maybe some Linuxes implement /dev/time, though, someone was
     # talking about it somewhere.
     try:
-        with open('/dev/time', 'r') as f:
-            # The time file holds one 32-bit number representing the sec-
-            # onds since start of epoch and three 64-bit numbers, repre-
-            # senting nanoseconds since start of epoch, clock ticks, and
-            # clock frequency.
-            #  -- cons(3)
-            s, ns, ct, cf = f.read().split()
-            return float(ct) / float(cf)
+        # The time file holds one 32-bit number representing the sec-
+        # onds since start of epoch and three 64-bit numbers, repre-
+        # senting nanoseconds since start of epoch, clock ticks, and
+        # clock frequency.
+        #  -- cons(3)
+        f = open('/dev/time', 'r')
+        s, ns, ct, cf = f.read().split()
+        f.close()
+        return float(ct) / float(cf)
     except (IOError, ValueError):
         return None
 
@@ -112,7 +113,7 @@ def _uptime_solaris():
     """Returns uptime in seconds or None, on Solaris."""
     try:
         kstat = ctypes.CDLL('libkstat.so')
-    except OSError:
+    except (OSError, RuntimeError):
         return None
 
     # kstat doesn't have uptime, but it does have boot time.
