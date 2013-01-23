@@ -8,7 +8,7 @@ setup(
     description='Cross-platform uptime library',
     long_description='''\
 This module provides a cross-platform way to retrieve system uptime.
-Supported platforms are Linux, Windows, OS X, *BSD, Solaris, and Plan 9.''',
+Supported platforms are Linux, Windows, OS X, *BSD, Solaris, Plan 9, and BeOS/Haiku.''',
     author='Koen Crolla',
     author_email='cairnarvon@gmail.com',
     url='https://github.com/Cairnarvon/uptime',

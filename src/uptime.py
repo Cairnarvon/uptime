@@ -53,6 +53,16 @@ def _uptime_linux():
     up = struct.unpack('@l', buf.raw[:struct.calcsize('@l')])[0]
     return up if up >= 0 else None
 
+def _uptime_beos():
+    """Returns uptime in seconds on None, on BeOS/Haiku."""
+    try:
+        libroot = ctypes.CDLL('libroot.so')
+    except (OSError, RuntimeError):
+        return None
+
+    libroot.system_time.restype = ctypes.c_int64
+    return libroot.system_time() / 1000000.
+
 def _uptime_bsd():
     """Returns uptime in seconds or None, on BSD (including OS X)."""
     try:
@@ -196,13 +206,15 @@ def _uptime_windows():
 
 def uptime():
     """Returns uptime in seconds if even remotely possible, or None if not."""
-    return {'cygwin': _uptime_linux,
+    return {'beos5': _uptime_beos,
+            'cygwin': _uptime_linux,
             'darwin': _uptime_osx,
+            'haiku1': _uptime_beos,
             'linux2': _uptime_linux,
             'sunos5': _uptime_solaris,
             'win32': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
-           _uptime_bsd() or _uptime_plan9() or \
-           _uptime_linux() or _uptime_windows() or _uptime_solaris()
+           _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
+           _uptime_windows() or _uptime_solaris() or _uptime_beos()
 
 
 if __name__ == '__main__':

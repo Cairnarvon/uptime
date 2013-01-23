@@ -16,10 +16,10 @@ It also exposes various platform-specific helper functions, which you probably
 won't need.
 
 This module has been tested on Debian Linux, FreeBSD, Windows XP, Mac OS X
-Lion, and OpenIndiana. It is additionally expected to work on every vaguely
-reasonable version of Linux and BSD, every version of Windows since Windows
-2000, and Plan 9 From Bell Labs. It is known *not* to work on Syllable and RISC
-OS (patches welcome).
+Lion, OpenIndiana, and Haiku. It is additionally expected to work on every
+vaguely reasonable version of Linux and BSD, every version of Windows since
+Windows 2000, and Plan 9 From Bell Labs. It is known *not* to work on Syllable
+and RISC OS (patches welcome).
 
 .. warning::
 
@@ -52,6 +52,11 @@ Helper functions
 All of these functions return either a floating point number representing the
 number of seconds of uptime, or :const:`None`, same as :func:`uptime.uptime`.
 You probably shouldn't call them yourself, but they're here if you want to.
+
+.. function:: _uptime_beos
+
+   BeOS/Haiku-specific uptime. It uses :c:func:`system_time` from ``libroot``
+   to determine the uptime.
 
 .. function:: _uptime_bsd
 
