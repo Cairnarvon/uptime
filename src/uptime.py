@@ -50,7 +50,7 @@ def _uptime_linux():
     if libc.sysinfo(buf) < 0:
         return None
 
-    up = struct.unpack('@l', buf.raw[:struct.calcsize('@l')])[0]
+    up = struct.unpack_from('@l', buf.raw)[0]
     return up if up >= 0 else None
 
 def _uptime_beos():
