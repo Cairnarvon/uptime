@@ -198,9 +198,11 @@ def _uptime_windows():
         return None
     if hasattr(ctypes.windll.kernel32, 'GetTickCount64'):
         # Vista/Server 2008 or later.
+        ctypes.windll.kernel32.GetTickCount64.restype = ctypes.c_uint64
         return ctypes.windll.kernel32.GetTickCount64() / 1000.
     if hasattr(ctypes.windll.kernel32, 'GetTickCount'):
         # Win2k or later; gives wrong answers after 49.7 days.
+        ctypes.windll.kernel32.GetTickCount.restype = ctypes.c_uint32
         return ctypes.windll.kernel32.GetTickCount() / 1000.
     return None
 
