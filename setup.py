@@ -18,7 +18,7 @@ try:
     # If we get here we succeeded. Hurray.
     ext = [distutils.core.Extension('uptime._posix', sources=['src/_posix.c'])]
     os.remove('src/_posix.o')
-except distutils.ccompiler.CompileError:
+except:
     # Never mind.
     ext = None
 
