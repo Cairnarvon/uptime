@@ -78,6 +78,12 @@ You probably shouldn't call them yourself, but they're here if you want to.
    Plan 9 From Bell Labs. Reads ``/dev/time``, which contains the number of
    clock ticks since boot and the number of clock ticks per seconds.
 
+.. function:: _uptime_posix
+
+   Fallback uptime for POSIX. Scans ``utmpx`` for a ``BOOT_TIME`` entry, and
+   if it's present, subtracts its value from the current time to find the
+   uptime.
+
 .. function:: _uptime_solaris
 
    Solaris-specific uptime. This uses ``libkstat`` to find out the system's
