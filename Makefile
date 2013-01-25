@@ -6,7 +6,7 @@ all:
 
 .PHONY: pypi
 pypi:
-	python setup.py sdist bdist_wininst upload
+	python setup.py sdist upload
 
 uptime.zip: doc/index.rst doc/conf.py
 	rm -f uptime.zip
