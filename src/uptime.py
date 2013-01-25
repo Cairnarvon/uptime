@@ -16,6 +16,11 @@ import struct
 import sys
 import time
 
+try:
+    from _uptime import _uptime_posix
+except ImportError:
+    _uptime_posix = lambda: None
+
 def _uptime_linux():
     """Returns uptime in seconds or None, on Linux."""
     # With procfs
@@ -216,7 +221,8 @@ def uptime():
             'sunos5': _uptime_solaris,
             'win32': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
-           _uptime_windows() or _uptime_solaris() or _uptime_beos()
+           _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
+           _uptime_posix()
 
 
 if __name__ == '__main__':
