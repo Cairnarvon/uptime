@@ -1,8 +1,26 @@
 #!/usr/bin/python
 
-from distutils.core import setup
+import distutils.core
+import distutils.ccompiler
+import distutils.sysconfig
 
-setup(
+# This module has an optional extension component.
+# If it doesn't build, it's not useful for your platform, but the pure-Python
+# component still probably is. So, let's figure out what we can do.
+try:
+    compiler = distutils.ccompiler.new_compiler()
+    compiler.add_include_dir(distutils.sysconfig.get_python_inc())
+    distutils.sysconfig.customize_compiler(compiler)
+
+    compiler.compile(['src/_uptime.c'])
+
+    # If we get here we succeeded. Hurray.
+    ext = [distutils.core.Extension('_uptime', sources=['src/_uptime.c'])]
+except distutils.ccompiler.CompileError:
+    # Never mind.
+    ext = None
+
+distutils.core.setup(
     name='uptime',
     version='1.2.1',
     description='Cross-platform uptime library',
@@ -14,6 +32,7 @@ Supported platforms are Linux, Windows, OS X, *BSD, Solaris, Plan 9, and BeOS/Ha
     url='https://github.com/Cairnarvon/uptime',
     package_dir={'': 'src'},
     py_modules=['uptime'],
+    ext_modules=ext,
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: System Administrators',
                  'License :: OSI Approved :: BSD License',
