@@ -223,12 +223,3 @@ def uptime():
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
            _uptime_posix()
-
-
-if __name__ == '__main__':
-    up = uptime()
-    if up is not None:
-        h, m, s = up / 3600, up / 60 % 60, up % 60
-        sys.stdout.write('Uptime: %02d:%02d:%02d (%.2f seconds).\n' % (h, m, s, up))
-    else:
-        sys.stdout.write('Unable to determine uptime. Patches welcome.\n')
