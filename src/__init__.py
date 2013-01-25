@@ -203,8 +203,6 @@ def _uptime_windows():
     Returns uptime in seconds or None, on Windows. Warning: may return
     incorrect answers after 49.7 days on versions older than Vista.
     """
-    if ctypes is None:
-        return None
     if not hasattr(ctypes, 'windll') or not hasattr(ctypes.windll, 'kernel32'):
         return None
     if hasattr(ctypes.windll.kernel32, 'GetTickCount64'):

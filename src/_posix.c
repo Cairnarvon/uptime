@@ -45,7 +45,7 @@ _uptime_posix(PyObject *self, PyObject *args)
     }
     tv.tv_sec -= bt.tv_sec;
 
-    up = (unsigned)tv.tv_sec + (unsigned)tv.tv_usec / 1000000.0f;
+    up = (unsigned)tv.tv_sec + (unsigned)tv.tv_usec / 1000000.0;
     return Py_BuildValue("d", up);
 }
 
