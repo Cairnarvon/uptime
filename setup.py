@@ -33,6 +33,7 @@ Supported platforms are Linux, Windows, OS X, *BSD, Solaris, Plan 9, and BeOS/Ha
     author_email='cairnarvon@gmail.com',
     url='https://github.com/Cairnarvon/uptime',
     package_dir={'uptime': 'src'},
+    packages=['uptime'],
     ext_modules=ext,
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: System Administrators',
