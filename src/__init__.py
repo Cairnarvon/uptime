@@ -17,8 +17,9 @@ import sys
 import time
 
 try:
-    from _uptime import _uptime_posix
+    from _posix import _uptime_posix
 except ImportError:
+    raise
     _uptime_posix = lambda: None
 
 def _uptime_linux():

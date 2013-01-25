@@ -56,7 +56,7 @@ static PyMethodDef _uptime_methods[] = {
 };
 
 PyMODINIT_FUNC
-init_uptime(void)
+init_posix(void)
 {
-    Py_InitModule("_uptime", _uptime_methods);
+    Py_InitModule("_posix", _uptime_methods);
 }

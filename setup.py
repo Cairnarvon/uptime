@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import os
 import distutils.core
 import distutils.ccompiler
 import distutils.sysconfig
@@ -12,10 +13,11 @@ try:
     compiler.add_include_dir(distutils.sysconfig.get_python_inc())
     distutils.sysconfig.customize_compiler(compiler)
 
-    compiler.compile(['src/_uptime.c'])
+    compiler.compile(['src/_posix.c'])
 
     # If we get here we succeeded. Hurray.
-    ext = [distutils.core.Extension('_uptime', sources=['src/_uptime.c'])]
+    ext = [distutils.core.Extension('uptime._posix', sources=['src/_posix.c'])]
+    os.remove('src/_posix.o')
 except distutils.ccompiler.CompileError:
     # Never mind.
     ext = None
@@ -30,8 +32,7 @@ Supported platforms are Linux, Windows, OS X, *BSD, Solaris, Plan 9, and BeOS/Ha
     author='Koen Crolla',
     author_email='cairnarvon@gmail.com',
     url='https://github.com/Cairnarvon/uptime',
-    package_dir={'': 'src'},
-    py_modules=['uptime'],
+    package_dir={'uptime': 'src'},
     ext_modules=ext,
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: System Administrators',
