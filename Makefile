@@ -18,3 +18,4 @@ clean:
 	cd doc; $(MAKE) clean
 	rm -f uptime.zip
 	rm -rf build
+	rm -rf src/*.pyc
