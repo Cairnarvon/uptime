@@ -25,6 +25,8 @@ try:
 except ImportError:
     _uptime_posix = lambda: None
 
+__all__ = ['uptime']
+
 def _uptime_linux():
     """Returns uptime in seconds or None, on Linux."""
     # With procfs
