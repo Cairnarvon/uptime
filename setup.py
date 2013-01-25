@@ -22,7 +22,7 @@ except distutils.ccompiler.CompileError:
 
 distutils.core.setup(
     name='uptime',
-    version='1.2.1',
+    version='1.3.0',
     description='Cross-platform uptime library',
     long_description='''\
 This module provides a cross-platform way to retrieve system uptime.
