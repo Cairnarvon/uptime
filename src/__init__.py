@@ -11,7 +11,11 @@ to standard output.
 
 """
 
-import ctypes
+try:
+    # So many broken ctypeses out there.
+    import ctypes
+except ImportError:
+    ctypes = None
 import struct
 import sys
 import time
@@ -35,7 +39,7 @@ def _uptime_linux():
     # Without procfs (really?)
     try:
         libc = ctypes.CDLL('libc.so')
-    except (OSError, RuntimeError):
+    except:
         # Debian and derivatives do the wrong thing because /usr/lib/libc.so
         # is a GNU ld script rather than an ELF object. To get around this, we
         # have to be more specific.
@@ -44,7 +48,7 @@ def _uptime_linux():
         # this point we're already pretty sure this isn't Linux.
         try:
             libc = ctypes.CDLL('libc.so.6')
-        except (OSError, RuntimeError):
+        except:
             return None
 
     if not hasattr(libc, 'sysinfo'):
@@ -62,7 +66,7 @@ def _uptime_beos():
     """Returns uptime in seconds on None, on BeOS/Haiku."""
     try:
         libroot = ctypes.CDLL('libroot.so')
-    except (OSError, RuntimeError):
+    except:
         return None
 
     libroot.system_time.restype = ctypes.c_int64
@@ -72,12 +76,12 @@ def _uptime_bsd():
     """Returns uptime in seconds or None, on BSD (including OS X)."""
     try:
         libc = ctypes.CDLL('libc.so')
-    except (OSError, RuntimeError):
+    except:
         # OS X; can't use ctypes.util.find_library because that creates
         # a new process on Linux, which is undesirable.
         try:
             libc = ctypes.CDLL('libc.dylib')
-        except (OSError, RuntimeError):
+        except:
             return None
     
     if not hasattr(libc, 'sysctlbyname'):
@@ -128,7 +132,7 @@ def _uptime_solaris():
     """Returns uptime in seconds or None, on Solaris."""
     try:
         kstat = ctypes.CDLL('libkstat.so')
-    except (OSError, RuntimeError):
+    except:
         return None
 
     # kstat doesn't have uptime, but it does have boot time.
@@ -199,6 +203,8 @@ def _uptime_windows():
     Returns uptime in seconds or None, on Windows. Warning: may return
     incorrect answers after 49.7 days on versions older than Vista.
     """
+    if ctypes is None:
+        return None
     if not hasattr(ctypes, 'windll') or not hasattr(ctypes.windll, 'kernel32'):
         return None
     if hasattr(ctypes.windll.kernel32, 'GetTickCount64'):
