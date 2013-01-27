@@ -14,9 +14,9 @@ to standard output.
 try:
     # So many broken ctypeses out there.
     import ctypes
+    import struct
 except ImportError:
     ctypes = None
-import struct
 import sys
 import time
 
