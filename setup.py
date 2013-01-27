@@ -24,7 +24,7 @@ except:
 
 distutils.core.setup(
     name='uptime',
-    version='1.3.0',
+    version='1.3.1',
     description='Cross-platform uptime library',
     long_description='''\
 This module provides a cross-platform way to retrieve system uptime.
