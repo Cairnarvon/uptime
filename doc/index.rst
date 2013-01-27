@@ -58,6 +58,8 @@ You probably shouldn't call them yourself, but they're here if you want to.
    BeOS/Haiku-specific uptime. It uses :c:func:`system_time` from ``libroot``
    to determine the uptime.
 
+   .. versionadded:: 1.2
+
 .. function:: _uptime_bsd
 
    BSD-specific uptime (including OS X). It uses ``sysctl`` (through the
@@ -84,22 +86,27 @@ You probably shouldn't call them yourself, but they're here if you want to.
    if it's present, subtracts its value from the current time to find the
    uptime.
 
-.. note::
+   .. note::
 
-   Because POSIX only specifies (some of) the members of :c:type:`struct utmpx`
-   but not their order or exact sizes, nor the values of ``utmpx``'s constants
-   (and there is no way to figure these things out at runtime), this is
-   implemented as a C extension (:mod:`uptime._posix`) :mod:`distutils` tries
-   to compile when you install :mod:`uptime`. If you're sure your ``utmpx``
-   database has a ``BOOT_TIME`` entry (many don't) but you're still getting
-   :const:`None` for an answer, it may be the case that the extension couldn't
-   be compiled.
+      Because POSIX only specifies (some of) the members of
+      :c:type:`struct utmpx` but not their order or exact sizes, nor the
+      values of ``utmpx``'s constants (and there is no way to figure these
+      things out at runtime), this is implemented as a C extension
+      (:mod:`uptime._posix`) :mod:`distutils` tries to compile when you
+      install :mod:`uptime`. If you're sure your ``utmpx`` database has a
+      ``BOOT_TIME`` entry (many don't) but you're still getting :const:`None`
+      for an answer, it may be the case that the extension couldn't be
+      compiled.
+
+   .. versionadded:: 1.3
 
 .. function:: _uptime_solaris
 
    Solaris-specific uptime. This uses ``libkstat`` to find out the system's
    boot time (``unix:0:system_misc:boot_time``), which it then subtracts from
    the current time to find the uptime.
+
+   .. versionadded:: 1.1
 
 .. function:: _uptime_syllable
 
