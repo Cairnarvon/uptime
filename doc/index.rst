@@ -12,15 +12,16 @@ your system has been up. This turns out to be surprisingly non-straightforward,
 but not impossible on any major platform. It tries to do this without creating
 any child processes, because parsing ``uptime(1)``'s output is cheating.
 
-It also exposes various platform-specific `helper functions`_, which you probably
-won't need.
+It also exposes various platform-specific `helper functions`_, which you
+probably won't need.
 
 .. warning::
 
-   This module depends very heavily on :mod:`ctypes`. It has become painfully
-   apparent that many less mainstream platforms ship with a broken version of
-   this standard library module, either accidentally or deliberately_. Please
-   test your Python installation before using :mod:`uptime`.
+   On most platforms, this module depends very heavily on :mod:`ctypes`. It
+   has become painfully apparent that many less mainstream platforms ship with
+   a broken version of this standard library module, either accidentally or
+   deliberately_. Please test your Python installation before using
+   :mod:`uptime`.
 
 .. _deliberately: https://developers.google.com/appengine/kb/libraries
 
@@ -29,7 +30,7 @@ Supported platforms
 -------------------
 
 These are the platforms on which :mod:`uptime` has been explicitly tested, and
-the ones on which it is therefore expected to work as well.
+the others on which it is therefore expected to work as well.
 
 +------------------+--------+--------------------------+---------------------+
 | Test platform    | Status | Function(s)              | Implications for... |
