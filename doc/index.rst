@@ -7,12 +7,12 @@
    :synopsis: Cross-platform uptime library
 .. moduleauthor:: Koen Crolla <cairnarvon@gmail.com>
 
-This module provides a function that tells you how long your system has been
-up. This turns out to be surprisingly non-straightforward, but not impossible
-on any major platform. It tries to do this without creating any child
-processes, because parsing ``uptime(1)``'s output is cheating.
+This module provides a function—:func:`uptime.uptime`—that tells you how long
+your system has been up. This turns out to be surprisingly non-straightforward,
+but not impossible on any major platform. It tries to do this without creating
+any child processes, because parsing ``uptime(1)``'s output is cheating.
 
-It also exposes various platform-specific helper functions, which you probably
+It also exposes various platform-specific `helper functions`_, which you probably
 won't need.
 
 .. warning::
@@ -23,6 +23,7 @@ won't need.
    test your Python installation before using :mod:`uptime`.
 
 .. _deliberately: https://developers.google.com/appengine/kb/libraries
+
 
 Supported platforms
 -------------------
@@ -63,8 +64,9 @@ Additionally, :mod:`uptime` *should* work on Plan 9 From Bell Labs, but this
 has not been tested. It probably won't work on any other operating systems not
 listed, including AmigaOS and RISC OS.
 
-The one you want
-----------------
+
+The only function you should call
+---------------------------------
 
 .. function:: uptime
 
@@ -85,6 +87,10 @@ Helper functions
 All of these functions return either a floating point number representing the
 number of seconds of uptime, or :const:`None`, same as :func:`uptime.uptime`.
 You probably shouldn't call them yourself, but they're here if you want to.
+
+Note that if :func:`uptime.uptime` returns :const:`None` for you, all of these
+functions will return :const:`None` as well; they're really only good for
+figuring out by which mechanism uptime was discovered.
 
 .. function:: _uptime_beos
 
