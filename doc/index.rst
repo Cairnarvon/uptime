@@ -34,11 +34,13 @@ the ones on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | Test platform    | Status | Function(s)              | Implications for... |
 +==================+========+==========================+=====================+
+| Android 4.0.3    | ✓      | :func:`_uptime_linux`    | Other versions of   |
+|                  |        |                          | Android, hopefully  |
++------------------+--------+--------------------------+---------------------+
 | Cygwin 1.7.17-1  | ✓      | :func:`_uptime_linux`    |                     |
 +------------------+--------+--------------------------+---------------------+
 | Debian Linux     | ✓      | :func:`_uptime_linux`,   | Every Linux since   |
-| 6.0.6            |        | :func:`_uptime_posix`    | ~1994, Android,     |
-|                  |        |                          | Cygwin              |
+| 6.0.6            |        | :func:`_uptime_posix`    | ~1994, Cygwin       |
 +------------------+--------+--------------------------+---------------------+
 | FreeBSD 9.1      | ✓      | :func:`_uptime_bsd`      | Every BSD           |
 +------------------+--------+--------------------------+---------------------+
@@ -52,6 +54,9 @@ the ones on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | Syllable Desktop | ✗ [*]_ | :func:`_uptime_syllable` | AtheOS              |
 | 0.6.7            |        |                          |                     |
++------------------+--------+--------------------------+---------------------+
+| Syllable Server  | ✓      | :func:`_uptime_linux`    |                     |
+| 0.1              |        |                          |                     |
 +------------------+--------+--------------------------+---------------------+
 | Windows XP SP 3  | ✓      | :func:`_uptime_windows`  | Every Windows since |
 |                  |        |                          | Windows 2000        |
