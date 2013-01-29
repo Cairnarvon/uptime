@@ -29,6 +29,7 @@ Tested on Debian, FreeBSD, Windows XP, Mac OS X Lion, OpenIndiana, and Haiku. Ex
 
 ### TODO
 
++ AmigaOS
 + AtheOS/Syllable
 + MS-DOS and earlier versions of Windows
 + RISC OS
