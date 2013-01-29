@@ -208,16 +208,23 @@ def _uptime_windows():
     Returns uptime in seconds or None, on Windows. Warning: may return
     incorrect answers after 49.7 days on versions older than Vista.
     """
-    if not hasattr(ctypes, 'windll') or not hasattr(ctypes.windll, 'kernel32'):
-        return None
-    if hasattr(ctypes.windll.kernel32, 'GetTickCount64'):
+    if hasattr(ctypes, 'windll') and hasattr(ctypes.windll, 'kernel32'):
+        lib = ctypes.windll.kernel32
+    else:
+        try:
+            # Windows CE uses the cdecl calling convention.
+            lib = ctypes.CDLL('coredll.lib')
+        except:
+            return None
+
+    if hasattr(lib, 'GetTickCount64'):
         # Vista/Server 2008 or later.
-        ctypes.windll.kernel32.GetTickCount64.restype = ctypes.c_uint64
-        return ctypes.windll.kernel32.GetTickCount64() / 1000.
-    if hasattr(ctypes.windll.kernel32, 'GetTickCount'):
-        # Win2k or later; gives wrong answers after 49.7 days.
-        ctypes.windll.kernel32.GetTickCount.restype = ctypes.c_uint32
-        return ctypes.windll.kernel32.GetTickCount() / 1000.
+        lib.GetTickCount64.restype = ctypes.c_uint64
+        return lib.GetTickCount64() / 1000.
+    if hasattr(lib, 'GetTickCount'):
+        # WinCE and Win2k or later; gives wrong answers after 49.7 days.
+        lib.GetTickCount.restype = ctypes.c_uint32
+        return lib.GetTickCount() / 1000.
     return None
 
 def uptime():
@@ -228,7 +235,8 @@ def uptime():
             'haiku1': _uptime_beos,
             'linux2': _uptime_linux,
             'sunos5': _uptime_solaris,
-            'win32': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
+            'win32': _uptime_windows,
+            'wince': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
            _uptime_posix()
