@@ -15,12 +15,6 @@ processes, because parsing ``uptime(1)``'s output is cheating.
 It also exposes various platform-specific helper functions, which you probably
 won't need.
 
-This module has been tested on Debian Linux, FreeBSD, Windows XP, Mac OS X
-Lion, OpenIndiana, and Haiku. It is additionally expected to work on every
-vaguely reasonable version of Linux and BSD, every version of Windows since
-Windows 2000, and Plan 9 From Bell Labs. It is known *not* to work on Syllable
-and RISC OS (patches welcome).
-
 .. warning::
 
    This module depends very heavily on :mod:`ctypes`. It has become painfully
@@ -29,6 +23,45 @@ and RISC OS (patches welcome).
    test your Python installation before using :mod:`uptime`.
 
 .. _deliberately: https://developers.google.com/appengine/kb/libraries
+
+Supported platforms
+-------------------
+
+These are the platforms on which :mod:`uptime` has been explicitly tested, and
+the ones on which it is therefore expected to work as well.
+
++------------------+--------+--------------------------+---------------------+
+| Test platform    | Status | Function(s)              | Implications for... |
++==================+========+==========================+=====================+
+| Cygwin 1.7.17-1  | ✓      | :func:`_uptime_linux`    |                     |
++------------------+--------+--------------------------+---------------------+
+| Debian Linux     | ✓      | :func:`_uptime_linux`,   | Every Linux since   |
+| 6.0.6            |        | :func:`_uptime_posix`    | ~1994, Android,     |
+|                  |        |                          | Cygwin              |
++------------------+--------+--------------------------+---------------------+
+| FreeBSD 9.1      | ✓      | :func:`_uptime_bsd`      | Every BSD           |
++------------------+--------+--------------------------+---------------------+
+| Haiku R1 Alpha   | ✓      | :func:`_uptime_beos`     | BeOS                |
+| 4.1              |        |                          |                     |
++------------------+--------+--------------------------+---------------------+
+| Mac OS X "Lion"  | ✓      | :func:`_uptime_osx`      | Every Mac OS X      |
++------------------+--------+--------------------------+---------------------+
+| OpenIndiana      | ✓      | :func:`_uptime_solaris`  | Solaris and its     |
+| 151a7            |        |                          | free knock-offs     |
++------------------+--------+--------------------------+---------------------+
+| Syllable Desktop | ✗ [*]_ | :func:`_uptime_syllable` | AtheOS              |
+| 0.6.7            |        |                          |                     |
++------------------+--------+--------------------------+---------------------+
+| Windows XP SP 3  | ✓      | :func:`_uptime_windows`  | Every Windows since |
+|                  |        |                          | Windows 2000        |
++------------------+--------+--------------------------+---------------------+
+
+.. [*] Not even the ``uptime(1)`` that ships with Syllable Desktop is able to
+   determine the system uptime on that platform.
+
+Additionally, :mod:`uptime` *should* work on Plan 9 From Bell Labs, but this
+has not been tested. It probably won't work on any other operating systems not
+listed, including AmigaOS and RISC OS.
 
 The one you want
 ----------------
