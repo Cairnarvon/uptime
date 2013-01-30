@@ -69,9 +69,9 @@ the others on which it is therefore expected to work as well.
 .. [*] Not even the ``uptime(1)`` that ships with Syllable Desktop is able to
    determine the system uptime on that platform.
 
-Additionally, :mod:`uptime` *should* work on Plan 9 From Bell Labs, but this
-has not been tested. It probably won't work on any other operating systems not
-listed, including AmigaOS and RISC OS.
+Additionally, :mod:`uptime` *should* work on Plan 9 From Bell Labs and *might*
+work on Windows CE (any version), but this has not been tested. It probably
+won't work on any other operating systems not listed.
 
 
 The only function you should call
