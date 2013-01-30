@@ -29,7 +29,6 @@ Tested on a bunch of platforms, expected to work on a bunch more. See the docume
 
 ### TODO
 
-+ AmigaOS
 + AtheOS/Syllable
 + MS-DOS and earlier versions of Windows
 + RISC OS

@@ -48,6 +48,9 @@ the others on which it is therefore expected to work as well.
 | Haiku R1 Alpha   | ✓      | :func:`_uptime_beos`     | BeOS                |
 | 4.1              |        |                          |                     |
 +------------------+--------+--------------------------+---------------------+
+| Icaros Desktop   | ✓      | :func:`_uptime_amiga`    | AROS, AmigaOS       |
+| 1.5.1            |        |                          |                     |
++------------------+--------+--------------------------+---------------------+
 | Mac OS X "Lion"  | ✓      | :func:`_uptime_osx`      | Every Mac OS X      |
 +------------------+--------+--------------------------+---------------------+
 | OpenIndiana      | ✓      | :func:`_uptime_solaris`  | Solaris and its     |
@@ -97,6 +100,14 @@ You probably shouldn't call them yourself, but they're here if you want to.
 Note that if :func:`uptime.uptime` returns :const:`None` for you, all of these
 functions will return :const:`None` as well; they're really only good for
 figuring out by which mechanism uptime was discovered.
+
+.. function:: _uptime_amiga
+
+   AmigaOS-specific uptime. It takes the creation time of the ``RAM:`` drive
+   to be the boot time, and subtracts it from the current time to determine
+   the uptime.
+
+   .. versionadded:: 1.4
 
 .. function:: _uptime_beos
 
