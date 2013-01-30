@@ -233,6 +233,8 @@ def uptime():
             'cygwin': _uptime_linux,
             'darwin': _uptime_osx,
             'haiku1': _uptime_beos,
+            'linux': _uptime_linux,
+            'linux-armv71': _uptime_linux,
             'linux2': _uptime_linux,
             'sunos5': _uptime_solaris,
             'win32': _uptime_windows,
