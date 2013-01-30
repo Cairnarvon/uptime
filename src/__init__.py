@@ -15,6 +15,7 @@ try:
     # So many broken ctypeses out there.
     import ctypes
     import struct
+    import os
 except ImportError:
     ctypes = None
 import sys
@@ -63,6 +64,13 @@ def _uptime_linux():
 
     up = struct.unpack_from('@l', buf.raw)[0]
     return up if up >= 0 else None
+
+def _uptime_amiga():
+    """Returns uptime in seconds or None, on AmigaOS."""
+    try:
+        return time.time() - os.stat('RAM:').st_ctime
+    except:
+        return None
 
 def _uptime_beos():
     """Returns uptime in seconds on None, on BeOS/Haiku."""
@@ -229,7 +237,9 @@ def _uptime_windows():
 
 def uptime():
     """Returns uptime in seconds if even remotely possible, or None if not."""
-    return {'beos5': _uptime_beos,
+    return {'amiga': _uptime_amiga,
+            'aros12': _uptime_amiga,
+            'beos5': _uptime_beos,
             'cygwin': _uptime_linux,
             'darwin': _uptime_osx,
             'haiku1': _uptime_beos,
@@ -241,4 +251,4 @@ def uptime():
             'wince': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
-           _uptime_posix()
+           _uptime_amiga() or _uptime_posix()
