@@ -141,6 +141,30 @@ def _uptime_plan9():
     except (IOError, ValueError):
         return None
 
+def _uptime_riscos():
+    """Returns uptime in seconds or None, on RISC OS."""
+    # Apparently the only way to get at the uptime is through a software
+    # interrupt. In C, this is done through _kernel_swi.
+    try:
+        libc = ctypes.CDLL('CLib')
+        libc._kernel_swi.argtypes = [ctypes.c_int,
+                                     ctypes.POINTER(ctypes.c_int * 10),
+                                     ctypes.POINTER(ctypes.c_int * 10)]
+    except:
+        return None
+
+    OS_ReadMonotonicTime = 0x42 # All sources seem to agree.
+    r = (ctypes.c_int * 10)()   # typedef struct {
+                                #     int r[10];
+                                # } _kernel_swi_regs;
+    libc._kernel_swi(OS_ReadMonotonicTime, ctypes.byref(r), ctypes.byref(r))
+
+    if r[0] < 0:
+        # Overflows after about eight months on 32-bit.
+        return None
+    else:
+        return r[0] / 100.
+
 def _uptime_solaris():
     """Returns uptime in seconds or None, on Solaris."""
     try:
@@ -246,9 +270,10 @@ def uptime():
             'linux': _uptime_linux,
             'linux-armv71': _uptime_linux,
             'linux2': _uptime_linux,
+            'riscos': _uptime_riscos,
             'sunos5': _uptime_solaris,
             'win32': _uptime_windows,
             'wince': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
-           _uptime_amiga() or _uptime_posix()
+           _uptime_amiga() or _uptime_riscos() or _uptime_posix()
