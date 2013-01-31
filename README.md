@@ -30,7 +30,7 @@ Tested on a bunch of platforms, expected to work on a bunch more. See the docume
 ### TODO
 
 + AtheOS/Syllable
-+ MS-DOS and earlier versions of Windows
++ MS-DOS
 + RISC OS
 + Windows CE
 

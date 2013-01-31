@@ -64,8 +64,10 @@ the others on which it is therefore expected to work as well.
 | Syllable Server  | ✓      | :func:`_uptime_linux`    |                     |
 | 0.1              |        |                          |                     |
 +------------------+--------+--------------------------+---------------------+
-| Windows XP SP 3  | ✓      | :func:`_uptime_windows`  | Every Windows since |
-|                  |        |                          | Windows 2000        |
+| Windows 98 SE    | ✓      | :func:`_uptime_windows`  | Every Windows since |
+|                  |        |                          | Windows 95          |
++------------------+--------+--------------------------+---------------------+
+| Windows XP SP 3  | ✓      | :func:`_uptime_windows`  |                     |
 +------------------+--------+--------------------------+---------------------+
 
 .. [*] Our current method relies on :mod:`ctypes`, and RISC OS doesn't seem to
@@ -187,11 +189,9 @@ figuring out by which mechanism uptime was discovered.
 .. function:: _uptime_windows
 
    Windows-specific uptime. From Vista onward, it will call
-   :c:func:`GetTickCount64` from Kernel32.lib. Before that (and since Windows
-   2000), it calls :c:func:`GetTickCount`, which returns an unsigned 32-bit
-   number representing the number of milliseconds since boot and will therefore
+   :c:func:`GetTickCount64` from Kernel32.lib. Before that, it calls
+   :c:func:`GetTickCount`, which returns an unsigned 32-bit number
+   representing the number of milliseconds since boot and will therefore
    overflow after 49.7 days. There is no way to tell when this has happened,
    but fortunately Windows systems won't stay up for that long.
-
-   There is no solution yet for versions older than Windows 2000.
 
