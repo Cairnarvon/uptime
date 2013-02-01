@@ -27,11 +27,4 @@ Full documentation [here](http://packages.python.org/uptime/). Works with any ve
 
 Tested on a bunch of platforms, expected to work on a bunch more. See the documentation for details.
 
-### TODO
-
-+ AtheOS/Syllable
-+ MS-DOS
-+ RISC OS
-+ Windows CE
-
-Know any other platforms I should add? [Let me know.](https://github.com/Cairnarvon/uptime/issues)
+For a list of platforms I'm working on adding, see [here](TODO.md). Know any others I should add? [Let me know.](https://github.com/Cairnarvon/uptime/issues)
