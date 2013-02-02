@@ -22,6 +22,11 @@ I saw an old Pascal program (can't find the link now) that used
 (at least) Windows XP. If it really does work in real DOS (which I haven't
 gotten around to testing), we need to check `_uptime_windows` first.
 
+Apparently `GetTickCount` was already part of the Win16 API (where it returned
+LONG instead of DWORD), so Windows 3.x support may be straightforward. It
+probably has to be done as an extension, though, since `ctypes` is a bit too
+modern.
+
 
 ## RISC OS
 
