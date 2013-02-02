@@ -56,6 +56,10 @@ the others on which it is therefore expected to work as well.
 | OpenIndiana      | ✓      | :func:`_uptime_solaris`  | Solaris and its     |
 | 151a7            |        |                          | free knock-offs     |
 +------------------+--------+--------------------------+---------------------+
+| Plan 9 from Bell | ✓      | :func:`_uptime_plan9`    |                     |
+| Labs, Fourth     |        |                          |                     |
+| Edition          |        |                          |                     |
++------------------+--------+--------------------------+---------------------+
 | RISC OS 5.19     | ✗ [*]_ | :func:`_uptime_riscos`   | RISC OS in general  |
 +------------------+--------+--------------------------+---------------------+
 | Syllable Desktop | ✗ [*]_ | :func:`_uptime_syllable` | AtheOS              |
@@ -76,9 +80,9 @@ the others on which it is therefore expected to work as well.
 .. [*] Not even the ``uptime(1)`` that ships with Syllable Desktop is able to
    determine the system uptime on that platform.
 
-Additionally, :mod:`uptime` *should* work on Plan 9 From Bell Labs and *might*
-work on Windows CE (any version), but this has not been tested. It probably
-won't work on any other operating systems not listed.
+Additionally, :mod:`uptime` *might* work on Windows CE (any version), but this
+has not been tested. It probably won't work on any other operating systems not
+listed.
 
 
 The only function you should call
