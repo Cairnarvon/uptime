@@ -63,7 +63,9 @@ def _uptime_linux():
         return None
 
     up = struct.unpack_from('@l', buf.raw)[0]
-    return up if up >= 0 else None
+    if up < 0:
+        up = None
+    return up
 
 def _uptime_amiga():
     """Returns uptime in seconds or None, on AmigaOS."""
@@ -119,7 +121,9 @@ def _uptime_bsd():
 
     boottime = sec + usec / 1000000.
     up = time.time() - boottime
-    return up if up > 0 else None
+    if up < 0:
+        up = None
+    return up
 
 _uptime_osx = _uptime_bsd
 
