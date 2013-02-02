@@ -1,26 +1,29 @@
 #!/usr/bin/python
 
-import os
+import sys
 import distutils.core
 import distutils.ccompiler
 import distutils.sysconfig
 
-# This module has an optional extension component.
-# If it doesn't build, it's not useful for your platform, but the pure-Python
-# component still probably is. So, let's figure out what we can do.
-try:
-    compiler = distutils.ccompiler.new_compiler()
-    compiler.add_include_dir(distutils.sysconfig.get_python_inc())
-    distutils.sysconfig.customize_compiler(compiler)
-
-    compiler.compile(['src/_posix.c'])
-
-    # If we get here we succeeded. Hurray.
-    ext = [distutils.core.Extension('uptime._posix', sources=['src/_posix.c'])]
-    os.remove('src/_posix.o')
-except:
-    # Never mind.
-    ext = None
+# This package has optional extension components. If they can't build, odds
+# are it's not a big deal, but there doesn't seem to be a convenient way to
+# tell distutils this. So let's just try compiling them and keeping track of
+# those that work.
+sys.stdout.write('Trial compilation of extensions. Ignore any errors.\n')
+ext = []
+for module in ('_posix',):
+    try:
+        compiler = distutils.ccompiler.new_compiler()
+        compiler.add_include_dir(distutils.sysconfig.get_python_inc())
+        distutils.sysconfig.customize_compiler(compiler)
+        compiler.compile(['src/%s.c' % module])
+    except:
+        pass
+    else:
+        ext.append(distutils.core.Extension('uptime.%s' % module,
+                                            sources=['src/%s.c' % module]))
+sys.stdout.write('End of trial compilation. Will build %s.\n' %
+                 (', '.join(e.name for e in ext) or 'none'))
 
 distutils.core.setup(
     name='uptime',
