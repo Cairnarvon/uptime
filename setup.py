@@ -27,7 +27,7 @@ sys.stdout.write('End of trial compilation. Will build %s.\n' %
 
 distutils.core.setup(
     name='uptime',
-    version='1.4.1',
+    version='1.4.2',
     description='Cross-platform uptime library',
     long_description='''\
 This module provides a cross-platform way to retrieve system uptime.
