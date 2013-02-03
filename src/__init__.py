@@ -308,4 +308,6 @@ def boottime():
         up = uptime()
         if up is None:
             return None
+    if __boottime is None:
+        _boottime_linux()
     return time.localtime(__boottime or time.time() - up)
