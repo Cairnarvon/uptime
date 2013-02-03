@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 import sys
-from uptime import uptime
+import time
+from uptime import *
 
 if __name__ == '__main__':
     up = uptime()
+    boot = boottime()
     if up is not None:
         parts = []
 
@@ -24,5 +26,6 @@ if __name__ == '__main__':
             parts.append('%.2f seconds' % up)
 
         sys.stdout.write('Uptime: %s.\n' % ', '.join(parts))
+        sys.stdout.write('Booted: %s.\n' % time.strftime('%c', boot))
     else:
         sys.stderr.write('Unable to determine uptime. Patches welcome.\n')
