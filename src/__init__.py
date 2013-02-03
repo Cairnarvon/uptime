@@ -28,6 +28,8 @@ except ImportError:
 
 __all__ = ['uptime']
 
+__boottime = None
+
 def _uptime_linux():
     """Returns uptime in seconds or None, on Linux."""
     # With procfs
@@ -70,7 +72,8 @@ def _uptime_linux():
 def _uptime_amiga():
     """Returns uptime in seconds or None, on AmigaOS."""
     try:
-        return time.time() - os.stat('RAM:').st_ctime
+        __boottime = os.stat('RAM:').st_ctime
+        return time.time() - __boottime
     except:
         return None
 
@@ -119,8 +122,8 @@ def _uptime_bsd():
     if usec > 1000000:
         usec = 0.
 
-    boottime = sec + usec / 1000000.
-    up = time.time() - boottime
+    __boottime = sec + usec / 1000000.
+    up = time.time() - __boottime
     if up < 0:
         up = None
     return up
@@ -177,8 +180,6 @@ def _uptime_solaris():
         return None
 
     # kstat doesn't have uptime, but it does have boot time.
-    boottime = None
-
     # Unfortunately, getting at it isn't perfectly straightforward.
     # First, let's pretend to be kstat.h
 
@@ -225,13 +226,13 @@ def _uptime_solaris():
     if ksp and kstat.kstat_read(kc, ksp, None) != -1:
         data = kstat.kstat_data_lookup(ksp, 'boot_time')
         if data:
-            boottime = data.contents.value.time
+            __boottime = data.contents.value.time
 
     # Clean-up.
     kstat.kstat_close(kc)
 
-    if boottime is not None:
-        return time.time() - boottime
+    if __boottime is not None:
+        return time.time() - __boottime
 
     return None
 
@@ -265,6 +266,9 @@ def _uptime_windows():
 
 def uptime():
     """Returns uptime in seconds if even remotely possible, or None if not."""
+    if __boottime is not None:
+        return time.time() - __boottime
+
     return {'amiga': _uptime_amiga,
             'aros12': _uptime_amiga,
             'beos5': _uptime_beos,
@@ -281,3 +285,11 @@ def uptime():
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
            _uptime_amiga() or _uptime_riscos() or _uptime_posix()
+
+def boottime():
+    """Returns boot time if remotely possible, or None if not."""
+    if __boottime is None:
+        up = uptime()
+        if up is None:
+            return None
+    return time.localtime(__boottime or time.time() - up)
