@@ -12,6 +12,9 @@ your system has been up. This turns out to be surprisingly non-straightforward,
 but not impossible on any major platform. It tries to do this without creating
 any child processes, because parsing ``uptime(1)``'s output is cheating.
 
+In the course of determining the uptime, this module may also determine the
+boot time. Therefore, it also provides a way to get at that.
+
 It also exposes various platform-specific `helper functions`_, which you
 probably won't need.
 
@@ -85,8 +88,8 @@ has not been tested. It probably won't work on any other operating systems not
 listed.
 
 
-The only function you should call
----------------------------------
+The only functions you should call
+----------------------------------
 
 .. function:: uptime
 
@@ -99,6 +102,19 @@ The only function you should call
    This function will try to call the right function for your platform (based
    on ``sys.platform``), or all functions in some order until it finds one
    that doesn't return :const:`None`.
+
+.. function:: boottime
+
+    >>> from uptime import boottime
+    >>> boottime()
+    time.struct_time(tm_year=2013, tm_mon=2, tm_mday=3, tm_hour=9, tm_min=11, tm_sec=42, tm_wday=6, tm_yday=34, tm_isdst=0)
+
+   Returns the boot time as a :class:`time.struct_time`. If it can be exactly
+   determined, it is; otherwise, the result of :func:`uptime.uptime` is
+   subtracted from the current time. If the uptime can't be determined either,
+   :const:`None` is returned.
+
+   .. versionadded:: 2.0
 
 
 Helper functions
