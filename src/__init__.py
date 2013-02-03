@@ -71,6 +71,7 @@ def _uptime_linux():
 
 def _boottime_linux():
     """A way to figure out the boot time directly on Linux."""
+    global __boottime
     try:
         f = open('/proc/stat', 'r')
         for line in f:
@@ -82,6 +83,7 @@ def _boottime_linux():
 
 def _uptime_amiga():
     """Returns uptime in seconds or None, on AmigaOS."""
+    global __boottime
     try:
         __boottime = os.stat('RAM:').st_ctime
         return time.time() - __boottime
@@ -103,6 +105,7 @@ def _uptime_beos():
 
 def _uptime_bsd():
     """Returns uptime in seconds or None, on BSD (including OS X)."""
+    global __boottime
     try:
         libc = ctypes.CDLL('libc.so')
     except:
@@ -185,6 +188,7 @@ def _uptime_riscos():
 
 def _uptime_solaris():
     """Returns uptime in seconds or None, on Solaris."""
+    global __boottime
     try:
         kstat = ctypes.CDLL('libkstat.so')
     except:
@@ -299,6 +303,7 @@ def uptime():
 
 def boottime():
     """Returns boot time if remotely possible, or None if not."""
+    global __boottime
     if __boottime is None:
         up = uptime()
         if up is None:
