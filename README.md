@@ -19,6 +19,7 @@ Or run the module as a script:
 ```
 $ python -m uptime
 Uptime: 109 days, 33.84 seconds.
+Booted: Wed Oct 10 06:28:24 2012.
 ```
 
 (You may need to use `uptime.__main__`, depending on your version of Python.)
