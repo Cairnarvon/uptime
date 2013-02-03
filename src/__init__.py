@@ -69,6 +69,17 @@ def _uptime_linux():
         up = None
     return up
 
+def _boottime_linux():
+    """A way to figure out the boot time directly on Linux."""
+    try:
+        f = open('/proc/stat', 'r')
+        for line in f:
+            if line.startswith('btime'):
+                __boottime = int(line.split()[1])
+        return time.localtime(__boottime)
+    except:
+        return None
+
 def _uptime_amiga():
     """Returns uptime in seconds or None, on AmigaOS."""
     try:

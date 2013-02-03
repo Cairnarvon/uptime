@@ -88,8 +88,8 @@ has not been tested. It probably won't work on any other operating systems not
 listed.
 
 
-The only functions you should call
-----------------------------------
+The only functions you should care about
+----------------------------------------
 
 .. function:: uptime
 
@@ -120,13 +120,26 @@ The only functions you should call
 Helper functions
 ----------------
 
-All of these functions return either a floating point number representing the
-number of seconds of uptime, or :const:`None`, same as :func:`uptime.uptime`.
-You probably shouldn't call them yourself, but they're here if you want to.
+All of the :func:`_uptime_*` functions return either a floating point number
+representing the number of seconds of uptime, or :const:`None`, same as
+:func:`uptime.uptime`. The :func:`_boottime_*` functions (just
+:func:`_boottime_linux` right now) will return a :class:`time.struct_time`
+instance representing the boot time or :const:`None`, same as
+:func:`uptime.boottime`. You probably shouldn't call any of them yourself, but
+they're here if you want to.
 
-Note that if :func:`uptime.uptime` returns :const:`None` for you, all of these
-functions will return :const:`None` as well; they're really only good for
-figuring out by which mechanism uptime was discovered.
+
+Note that if :func:`uptime.uptime` or :func:`uptime.boottime` return
+:const:`None` for you, all of these functions will return :const:`None` as
+well; they're really only good for figuring out by which mechanism uptime was
+discovered.
+
+.. function:: _boottime_linux
+
+   A way to figure out the boot time directly on Linux. This reads the
+   ``btime`` entry in ``/proc/stat``.
+
+   .. versionadded:: 2.0
 
 .. function:: _uptime_amiga
 
