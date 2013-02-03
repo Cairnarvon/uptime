@@ -26,7 +26,7 @@ try:
 except ImportError:
     _uptime_posix = lambda: None
 
-__all__ = ['uptime']
+__all__ = ['uptime', 'boottime']
 
 __boottime = None
 
