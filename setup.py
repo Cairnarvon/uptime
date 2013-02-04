@@ -1,31 +1,27 @@
 #!/usr/bin/python
 
-import sys
-import distutils.core
-import distutils.ccompiler
-import distutils.sysconfig
+from distutils.core import setup, Extension
+from distutils.command.build_ext import build_ext
+from distutils import log
 
-# This package has optional extension components. If they can't build, odds
-# are it's not a big deal, but there doesn't seem to be a convenient way to
-# tell distutils this. So let's just try compiling them and keeping track of
-# those that work.
-sys.stdout.write('Trial compilation of extensions. Ignore any errors.\n')
-ext = []
-for module in ('_posix',):
-    try:
-        compiler = distutils.ccompiler.new_compiler()
-        compiler.add_include_dir(distutils.sysconfig.get_python_inc())
-        distutils.sysconfig.customize_compiler(compiler)
-        compiler.compile(['src/%s.c' % module])
-    except:
-        pass
-    else:
-        ext.append(distutils.core.Extension('uptime.%s' % module,
-                                            sources=['src/%s.c' % module]))
-sys.stdout.write('End of trial compilation. Will build %s.\n' %
-                 (', '.join(e.name for e in ext) or 'none'))
+class ve_build_ext(build_ext):
+    # The uptime package has (an) optional extension component(s).
+    # If they don't build, they probably don't apply to your platform and
+    # should be ignored. If they do apply, they can probably still be ignored
+    # anyway.
+    def run(self):
+        try:
+            build_ext.run(self)
+        except:
+            log.warn('not building extensions')
 
-distutils.core.setup(
+    def build_extension(self, ext):
+        try:
+            build_ext.build_extension(self, ext)
+        except:
+            log.warn('build failed: %s (no big deal)' % ext.name)
+
+dist = setup(
     name='uptime',
     version='2.0.0',
     description='Cross-platform uptime library',
@@ -35,9 +31,10 @@ Supported platforms are Linux, Windows, OS X, *BSD, Solaris, Plan 9, and BeOS/Ha
     author='Koen Crolla',
     author_email='cairnarvon@gmail.com',
     url='https://github.com/Cairnarvon/uptime',
+    cmdclass={'build_ext': ve_build_ext},
     package_dir={'uptime': 'src'},
     packages=['uptime'],
-    ext_modules=ext,
+    ext_modules=[Extension('uptime._posix', sources=['src/_posix.c'])],
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: System Administrators',
                  'License :: OSI Approved :: BSD License',
