@@ -26,8 +26,8 @@ dist = setup(
     version='2.0.1',
     description='Cross-platform uptime library',
     long_description='''\
-This module provides a cross-platform way to retrieve system uptime.
-Supported platforms are Linux, Windows, OS X, *BSD, Solaris, Plan 9, and BeOS/Haiku.''',
+This module provides a cross-platform way to retrieve system uptime and boot time.
+See documentation for a full list of supported platforms (yours is likely one of them).''',
     author='Koen Crolla',
     author_email='cairnarvon@gmail.com',
     url='https://github.com/Cairnarvon/uptime',
