@@ -13,10 +13,14 @@ but not impossible on any major platform. It tries to do this without creating
 any child processes, because parsing ``uptime(1)``'s output is cheating.
 
 In the course of determining the uptime, this module may also determine the
-boot time. Therefore, it also provides a way to get at that.
+boot time. Therefore, it also provides a way to get at that:
+:func:`uptime.boottime`.
 
 It also exposes various platform-specific `helper functions`_, which you
 probably won't need.
+
+You can download the latest version of this library here_, or install it using
+:program:`easy_install` or :program:`pip` in the usual way.
 
 .. warning::
 
@@ -26,6 +30,7 @@ probably won't need.
    deliberately_. Please test your Python installation before using
    :mod:`uptime`.
 
+.. _here: pypi.python.org/pypi/uptime
 .. _deliberately: https://developers.google.com/appengine/kb/libraries
 
 
@@ -80,8 +85,8 @@ the others on which it is therefore expected to work as well.
 .. [*] Our current method relies on :mod:`ctypes`, and RISC OS doesn't seem to
    have a version of Python available that has a working one.
 
-.. [*] Not even the ``uptime(1)`` that ships with Syllable Desktop is able to
-   determine the system uptime on that platform.
+.. [*] Not even the :command:`uptime` that ships with Syllable Desktop is able
+   to determine the system uptime on that platform.
 
 Additionally, :mod:`uptime` *might* work on Windows CE (any version), but this
 has not been tested. It probably won't work on any other operating systems not
@@ -99,9 +104,11 @@ The only functions you should care about
 
    Returns the uptime in seconds, or :const:`None` if it can't figure it out.
 
-   This function will try to call the right function for your platform (based
-   on ``sys.platform``), or all functions in some order until it finds one
-   that doesn't return :const:`None`.
+   This function will try to call the right `helper function`_ for your platform
+   (based on :const:`sys.platform`), or all functions in some order until it
+   finds one that doesn't return :const:`None`.
+
+   .. _`helper function`: `helper functions`_
 
 .. function:: boottime
 
@@ -120,34 +127,52 @@ The only functions you should care about
 Helper functions
 ----------------
 
-All of the :func:`_uptime_*` functions return either a floating point number
-representing the number of seconds of uptime, or :const:`None`, same as
-:func:`uptime.uptime`. The :func:`_boottime_*` functions (just
-:func:`_boottime_linux` right now) will return a :class:`time.struct_time`
+All of the boottime_ helper functions will return a :class:`time.struct_time`
 instance representing the boot time or :const:`None`, same as
-:func:`uptime.boottime`. You probably shouldn't call any of them yourself, but
-they're here if you want to.
-
+:func:`uptime.boottime`. All of the uptime_ helper functions will return a
+number (probably a float) representing the uptime in seconds or :const:`None`,
+same as :func:`uptime.uptime`.
 
 Note that if :func:`uptime.uptime` or :func:`uptime.boottime` return
 :const:`None` for you, all of these functions will return :const:`None` as
-well; they're really only good for figuring out by which mechanism uptime was
-discovered.
+well. There is probably no good reason for you to call any of them yourself,
+except perhaps to find out how :func:`uptime.uptime` determined the uptime.
+(:func:`uptime.boottime` is more difficult to diagnose, because boot time is
+usually figured out as a side effect of determining the uptime rather than
+directly through a helper function.)
+
+They're documented here mainly to serve as a reference for how uptime may be
+determined on the various platform :mod:`uptime` supports, which may be of use
+to people implementing a similar library in other languages or something.
+
+
+boottime
+^^^^^^^^
 
 .. function:: _boottime_linux
 
-   A way to figure out the boot time directly on Linux. This reads the
-   ``btime`` entry in ``/proc/stat``.
+   A way to figure out the boot time directly on Linux. This reads the ``btime``
+   entry in :file:`/proc/stat`, which is the boot time in seconds since the
+   Epoch.
 
    .. versionadded:: 2.0
 
+
+uptime
+^^^^^^
+
 .. function:: _uptime_amiga
 
-   AmigaOS-specific uptime. It takes the creation time of the ``RAM:`` drive
+   AmigaOS-specific uptime. It takes the creation time of the :file:`RAM:` drive
    to be the boot time, and subtracts it from the current time to determine
    the uptime.
 
+   This trick was gleaned from the uptime-DA_ tool created by Daniel Adolfsson,
+   and does *not* require a working :mod:`ctypes`.
+
    .. versionadded:: 1.4
+
+   .. _uptime-DA: http://aminet.net/package/util/time/uptime-DA
 
 .. function:: _uptime_beos
 
@@ -164,8 +189,11 @@ discovered.
 
 .. function:: _uptime_linux
 
-   Linux-specific uptime. It first tries to read ``/proc/uptime``, and if that
-   fails, it calls the :c:func:`sysinfo` C function.
+   Linux-specific uptime. It first tries to read :file:`/proc/uptime`, and if
+   that fails, it calls the :c:func:`sysinfo` C function.
+
+   If :file:`/proc/uptime` exists, this function does not require a working
+   :mod:`ctypes`.
 
 .. function:: _uptime_osx
 
@@ -173,14 +201,17 @@ discovered.
 
 .. function:: _uptime_plan9
 
-   Plan 9 From Bell Labs. Reads ``/dev/time``, which contains the number of
-   clock ticks since boot and the number of clock ticks per seconds.
+   Plan 9 From Bell Labs. Reads :file:`/dev/time`, which contains, among other
+   things, the number of clock ticks since boot and the number of clock ticks
+   per second.
+
+   This function does not require a working :mod:`ctypes`.
 
 .. function:: _uptime_posix
 
-   Fallback uptime for POSIX. Scans ``utmpx`` for a ``BOOT_TIME`` entry, and
-   if it's present, subtracts its value from the current time to find the
-   uptime.
+   Fallback uptime for POSIX. Scans the ``utmpx`` database for a
+   :c:data:`BOOT_TIME` entry, and if it's present, subtracts its value from the
+   current time to find the uptime.
 
    .. note::
 
@@ -190,19 +221,19 @@ discovered.
       things out at runtime), this is implemented as a C extension
       (:mod:`uptime._posix`) :mod:`distutils` tries to compile when you
       install :mod:`uptime`. If you're sure your ``utmpx`` database has a
-      ``BOOT_TIME`` entry (many don't) but you're still getting :const:`None`
-      for an answer, it may be the case that the extension couldn't be
-      compiled.
+      :c:data:`BOOT_TIME` entry (many don't) but you're still getting
+      :const:`None` for an answer, it may be the case that the extension
+      couldn't be compiled.
 
    .. versionadded:: 1.3
 
 .. function:: _uptime_riscos
 
    RISC OS-specific uptime. This uses :c:func:`_kernel_swi` to perform the
-   software interrupt ``OS_ReadMonotonicTime``, which returns the uptime in
-   centiseconds. This will overflow after about eight months on 32-bit systems
-   (2.9 billion years on 64-bit). If this can be detected, the function will
-   return :const:`None` rather than rely on assumptions regarding signed
+   software interrupt :c:data:`OS_ReadMonotonicTime`, which returns the uptime
+   in centiseconds. This will overflow after about eight months on 32-bit
+   systems (2.9 billion years on 64-bit). If this can be detected, the function
+   will return :const:`None` rather than rely on assumptions regarding signed
    overflow.
 
    .. versionadded:: 1.4
@@ -222,7 +253,7 @@ discovered.
 .. function:: _uptime_windows
 
    Windows-specific uptime. From Vista onward, it will call
-   :c:func:`GetTickCount64` from Kernel32.lib. Before that, it calls
+   :c:func:`GetTickCount64` from :file:`kernel32.lib`. Before that, it calls
    :c:func:`GetTickCount`, which returns an unsigned 32-bit number
    representing the number of milliseconds since boot and will therefore
    overflow after 49.7 days. There is no way to tell when this has happened,
