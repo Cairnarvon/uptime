@@ -23,7 +23,7 @@ class ve_build_ext(build_ext):
 
 dist = setup(
     name='uptime',
-    version='2.0.1',
+    version='2.0.2',
     description='Cross-platform uptime library',
     long_description='''\
 This module provides a cross-platform way to retrieve system uptime and boot time.
