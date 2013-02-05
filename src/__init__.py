@@ -22,7 +22,7 @@ import sys
 import time
 
 try:
-    from _posix import _uptime_posix
+    from uptime._posix import _uptime_posix
 except ImportError:
     _uptime_posix = lambda: None
 

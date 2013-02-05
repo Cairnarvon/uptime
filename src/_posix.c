@@ -51,12 +51,36 @@ _uptime_posix(PyObject *self, PyObject *args)
 
 static PyMethodDef _uptime_methods[] = {
     {"_uptime_posix", _uptime_posix, METH_NOARGS,
-     "Fallback uptime for POSIX."},
+    "Fallback uptime for POSIX."},
     {NULL, NULL, 0, NULL}
 };
+
+#if PY_MAJOR_VERSION >= 3
+
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "uptime._posix",
+    "Fallback uptime for POSIX.",
+    -1,
+    _uptime_methods,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+
+PyMODINIT_FUNC
+PyInit__posix(void)
+{
+    return PyModule_Create(&moduledef);
+}
+
+#else
 
 PyMODINIT_FUNC
 init_posix(void)
 {
     Py_InitModule("_posix", _uptime_methods);
 }
+
+#endif
