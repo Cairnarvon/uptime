@@ -40,7 +40,7 @@ some information:
 
 double _uptime_palmos(void)
 {
-    return TimeGetTicks() / SysTicksPerSecond()
+    return TimeGetTicks() / SysTicksPerSecond();
 }
 ```
 
