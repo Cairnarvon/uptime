@@ -51,7 +51,7 @@ _uptime_posix(PyObject *self, PyObject *args)
 
 static PyMethodDef _uptime_methods[] = {
     {"_uptime_posix", _uptime_posix, METH_NOARGS,
-    "Fallback uptime for POSIX."},
+     "Fallback uptime for POSIX."},
     {NULL, NULL, 0, NULL}
 };
 
