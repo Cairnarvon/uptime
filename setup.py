@@ -35,7 +35,7 @@ See documentation for a full list of supported platforms (yours is likely one of
     package_dir={'uptime': 'src'},
     packages=['uptime'],
     ext_modules=[Extension('uptime._posix', sources=['src/_posix.c'])],
-    classifiers=['Development Status :: 4 - Beta',
+    classifiers=['Development Status :: 5 - Production/Stable',
                  'Intended Audience :: System Administrators',
                  'License :: OSI Approved :: BSD License',
                  'Operating System :: MacOS :: MacOS X',
