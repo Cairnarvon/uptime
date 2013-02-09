@@ -6,8 +6,12 @@ from uptime import *
 
 if __name__ == '__main__':
     up = uptime()
-    boot = boottime()
-    if up is not None:
+
+    if up is None:
+        sys.stderr.write('Unable to determine uptime. Patches welcome.\n')
+        sys.exit(1)
+
+    if '-b' not in sys.argv:
         parts = []
 
         days, up = up // 86400, up % 86400
@@ -26,6 +30,6 @@ if __name__ == '__main__':
             parts.append('%.2f seconds' % up)
 
         sys.stdout.write('Uptime: %s.\n' % ', '.join(parts))
-        sys.stdout.write('Booted: %s.\n' % time.strftime('%c', boot))
     else:
-        sys.stderr.write('Unable to determine uptime. Patches welcome.\n')
+        boot = boottime()
+        sys.stdout.write('Booted: %s.\n' % time.strftime('%c', boot))
