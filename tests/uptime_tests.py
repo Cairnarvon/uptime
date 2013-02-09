@@ -28,13 +28,13 @@ class NormalTest(unittest.TestCase):
         """
         imp.reload(uptime)
 
-    def basic_test(self, func, rettype):
+    def basic_test(self, func, rettypes):
         """
-        Calls a given function and checks if it returns None or something of
-        type rettype.
+        Calls a given function and checks if it returns something of a type
+        in the sequence rettypes.
         """
         ret = func()
-        self.assertTrue(ret is None or isinstance(ret, rettype))
+        self.assertTrue(any(isinstance(ret, t) for t in rettypes))
 
     def __getattr__(self, name):
         # I really don't feel like writing and maintaining over a dozen
@@ -43,12 +43,12 @@ class NormalTest(unittest.TestCase):
         if name.startswith('test_'):
             func = name[5:]
             if func == 'uptime' or func in uptime_helpers:
-                rettype = float
+                rettypes = (type(None), float, int)
             elif func == 'boottime' or func in boottime_helpers:
-                rettype = time.struct_time
+                rettypes = (type(None), time.struct_time)
             else:
                 raise AttributeError()
-            return lambda: self.basic_test(getattr(uptime, func), rettype)
+            return lambda: self.basic_test(getattr(uptime, func), rettypes)
         else:
             return unittest.TestCase.__getattr__(self, name)
 
