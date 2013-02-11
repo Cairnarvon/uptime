@@ -30,7 +30,7 @@ You can download the latest version of this library here_, or install it using
    deliberately_. Please test your Python installation before using
    :mod:`uptime`.
 
-.. _here: pypi.python.org/pypi/uptime
+.. _here: http://pypi.python.org/pypi/uptime
 .. _deliberately: https://developers.google.com/appengine/kb/libraries
 
 
