@@ -57,7 +57,8 @@ class BrokenCtypesTest(NormalTest):
     It's ridiculous how many platforms don't have ctypes. This class simulates
     that.
     """
-    def setUpClass(self):
+    @classmethod
+    def setUpClass(cls):
         uptime.ctypes = None
         delattr(uptime, 'struct')
         delattr(uptime, 'os')
