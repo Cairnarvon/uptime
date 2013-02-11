@@ -16,11 +16,10 @@ seems to be broken. Maybe it's just not possible.
 
 ## DOS and Windows 3.x
 
-I saw an old Pascal program (can't find the link now) that used
-[`getftime`](http://www.delorie.com/djgpp/doc/libc/libc_394.html) on
+I found [an old Pascal program](http://www.freedos.org/software/?prog=uptime)
+that uses [`getftime`](http://www.delorie.com/djgpp/doc/libc/libc_394.html) on
 [`NUL`](http://en.wikipedia.org/wiki/NUL:), but that gives the wrong answer on
-(at least) Windows XP. If it really does work in real DOS (which I haven't
-gotten around to testing), we need to check `_uptime_windows` first.
+FreeDOS (and, for that matter, Windows XP), so it isn't usable.
 
 Apparently `GetTickCount` was already part of the Win16 API (where it returned
 LONG instead of DWORD), so Windows 3.x support may be straightforward. It
