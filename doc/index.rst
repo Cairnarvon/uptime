@@ -259,3 +259,30 @@ uptime
    overflow after 49.7 days. There is no way to tell when this has happened,
    but fortunately Windows systems won't stay up for that long.
 
+
+Calling :mod:`uptime` as a script
+---------------------------------
+
+If you like, you can also call :mod:`uptime` as a script, to get a more
+readable replacement for the :command:`uptime` that ships with your operating
+system (if any):
+
+.. code-block:: console
+
+   $ python -m uptime
+   Uptime: 109 days, 33.84 seconds.
+
+You can also display the boot time by passing the :option:`-b` switch:
+
+.. code-block:: console
+
+   $ python -m uptime -b
+   Booted: Wed Oct 10 06:28:24 2012 CET.
+
+Exact output will depend on your locale and the value of the :envvar:`TZ`
+environment variable.
+
+If you're using Python 2.6 or 3.0, you will need to call :mod:`uptime.__main__`
+instead; see `Issue 2751`_.
+
+.. _`Issue 2751`: http://bugs.python.org/issue2751
