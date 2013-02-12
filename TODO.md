@@ -58,17 +58,6 @@ the time of the first reset, last reset, and number of resets), but the Palm OS
 is 2426 pages. I'll find it eventually.
 
 
-## RISC OS
-
-Unless someone gets a Python with `ctypes` working, we may have to write an
-extension and include extensive manual build instructions. I don't imagine
-`distutils` would cope very well.
-
-I'm not even sure the current method would work with `ctypes`; `_swi` could be
-a compiler extension and not part of `CLib`. RISC OS is so painful to work with
-I haven't even checked.
-
-
 ## Symbian
 
 ```cpp

@@ -70,7 +70,7 @@ the others on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | ReactOS 0.3.14   | ✓      | :func:`_uptime_windows`  |                     |
 +------------------+--------+--------------------------+---------------------+
-| RISC OS 5.19     | ✗ [*]_ | :func:`_uptime_riscos`   | RISC OS in general  |
+| RISC OS 5.19     | ✓      | :func:`_uptime_riscos`   | RISC OS in general  |
 +------------------+--------+--------------------------+---------------------+
 | Syllable Desktop | ✗ [*]_ | :func:`_uptime_syllable` | AtheOS              |
 | 0.6.7            |        |                          |                     |
@@ -83,9 +83,6 @@ the others on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | Windows XP SP 3  | ✓      | :func:`_uptime_windows`  |                     |
 +------------------+--------+--------------------------+---------------------+
-
-.. [*] Our current method relies on :mod:`ctypes`, and RISC OS doesn't seem to
-   have a version of Python available that has a working one.
 
 .. [*] Not even the :command:`uptime` that ships with Syllable Desktop is able
    to determine the system uptime on that platform.
@@ -231,12 +228,14 @@ uptime
 
 .. function:: _uptime_riscos
 
-   RISC OS-specific uptime. This uses :c:func:`_kernel_swi` to perform the
+   RISC OS-specific uptime. This uses the :mod:`swi` module to perform the
    software interrupt :c:data:`OS_ReadMonotonicTime`, which returns the uptime
    in centiseconds. This will overflow after about eight months on 32-bit
    systems (2.9 billion years on 64-bit). If this can be detected, the function
    will return :const:`None` rather than rely on assumptions regarding signed
    overflow.
+
+   This function does not require a working :mod:`ctypes`.
 
    .. versionadded:: 1.4
 

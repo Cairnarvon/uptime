@@ -22,6 +22,12 @@ import sys
 import time
 
 try:
+    # RISC OS only.
+    import swi
+except ImportError:
+    pass
+
+try:
     from uptime._posix import _uptime_posix
 except ImportError:
     _uptime_posix = lambda: None
@@ -164,27 +170,14 @@ def _uptime_plan9():
 
 def _uptime_riscos():
     """Returns uptime in seconds or None, on RISC OS."""
-    # Apparently the only way to get at the uptime is through a software
-    # interrupt. In C, this is done through _kernel_swi.
     try:
-        libc = ctypes.CDLL('CLib')
-        libc._kernel_swi.argtypes = [ctypes.c_int,
-                                     ctypes.POINTER(ctypes.c_int * 10),
-                                     ctypes.POINTER(ctypes.c_int * 10)]
+        up = swi.swi('OS_ReadMonotonicTime', ';i')
+        if up < 0:
+            # Overflows after about eight months on 32-bit.
+            return None
+        return up / 100.
     except:
         return None
-
-    OS_ReadMonotonicTime = 0x42 # All sources seem to agree.
-    r = (ctypes.c_int * 10)()   # typedef struct {
-                                #     int r[10];
-                                # } _kernel_swi_regs;
-    libc._kernel_swi(OS_ReadMonotonicTime, ctypes.byref(r), ctypes.byref(r))
-
-    if r[0] < 0:
-        # Overflows after about eight months on 32-bit.
-        return None
-    else:
-        return r[0] / 100.
 
 def _uptime_solaris():
     """Returns uptime in seconds or None, on Solaris."""
