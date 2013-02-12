@@ -68,6 +68,8 @@ the others on which it is therefore expected to work as well.
 | Labs, Fourth     |        |                          |                     |
 | Edition          |        |                          |                     |
 +------------------+--------+--------------------------+---------------------+
+| ReactOS 0.3.14   | ✓      | :func:`_uptime_windows`  |                     |
++------------------+--------+--------------------------+---------------------+
 | RISC OS 5.19     | ✗ [*]_ | :func:`_uptime_riscos`   | RISC OS in general  |
 +------------------+--------+--------------------------+---------------------+
 | Syllable Desktop | ✗ [*]_ | :func:`_uptime_syllable` | AtheOS              |
