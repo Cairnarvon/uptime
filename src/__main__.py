@@ -4,6 +4,12 @@ import sys
 import time
 from uptime import *
 
+try:
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
+
 if __name__ == '__main__':
     up = uptime()
 
@@ -32,4 +38,4 @@ if __name__ == '__main__':
         sys.stdout.write('Uptime: %s.\n' % ', '.join(parts))
     else:
         boot = boottime()
-        sys.stdout.write('Booted: %s.\n' % time.strftime('%c', boot))
+        sys.stdout.write(time.strftime('Booted: %c.\n', boot))
