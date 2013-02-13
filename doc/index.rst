@@ -288,4 +288,7 @@ environment variable.
 If you're using Python 2.6 or 3.0, you will need to call :mod:`uptime.__main__`
 instead; see `Issue 2751`_.
 
+.. versionchanged:: 2.0.3
+   Added :option:`-b` flag.
+
 .. _`Issue 2751`: http://bugs.python.org/issue2751
