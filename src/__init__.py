@@ -286,6 +286,7 @@ def uptime():
             'linux': _uptime_linux,
             'linux-armv71': _uptime_linux,
             'linux2': _uptime_linux,
+            'minix3': _uptime_linux,
             'riscos': _uptime_riscos,
             'sunos5': _uptime_solaris,
             'win32': _uptime_windows,
