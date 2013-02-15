@@ -74,7 +74,7 @@ the others on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | RISC OS 5.19     | ✓      | :func:`_uptime_riscos`   | RISC OS in general  |
 +------------------+--------+--------------------------+---------------------+
-| Syllable Desktop | ✗ [*]_ | :func:`_uptime_syllable` | AtheOS              |
+| Syllable Desktop | ✓      | :func:`_uptime_syllable` | AtheOS              |
 | 0.6.7            |        |                          |                     |
 +------------------+--------+--------------------------+---------------------+
 | Syllable Server  | ✓      | :func:`_uptime_linux`    |                     |
@@ -85,9 +85,6 @@ the others on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | Windows XP SP 3  | ✓      | :func:`_uptime_windows`  |                     |
 +------------------+--------+--------------------------+---------------------+
-
-.. [*] Not even the :command:`uptime` that ships with Syllable Desktop is able
-   to determine the system uptime on that platform.
 
 Additionally, :mod:`uptime` *might* work on Windows CE (any version), but this
 has not been tested. It probably won't work on any other operating systems not
@@ -251,7 +248,11 @@ uptime
 
 .. function:: _uptime_syllable
 
-   Syllable-specific uptime. This does nothing at this point.
+   Syllable-specific uptime. It assumes the ``mtime`` of the first
+   pseudo-terminal's master device, :file:`/dev/pty/mst/pty0`, is the boot
+   time, and subtracts that from the current time to find the uptime.
+
+   This function does not require a working :mod:`ctypes`.
 
 .. function:: _uptime_windows
 

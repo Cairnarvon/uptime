@@ -2,18 +2,6 @@ Here's my to-do list, plus some avenues to explore to get there, in case
 anyone else wants to have a go.
 
 
-## AtheOS/Syllable Desktop
-
-Syllable ships with the GNU coreutils, and its `uptime(1)` just doesn't work.
-There also doesn't seem to be anything in, say, `/var/run` whose `mtime` or
-`atime` we could use to determine boot time.
-
-I've looked through the source code a few times, but found nothing of interest.
-
-As a point of interest, [this page](http://atheos.syllable.org/uptime.php3.html)
-seems to be broken. Maybe it's just not possible.
-
-
 ## DOS and Windows 3.x
 
 I found [an old Pascal program](http://www.freedos.org/software/?prog=uptime)
