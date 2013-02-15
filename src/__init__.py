@@ -15,9 +15,14 @@ try:
     # So many broken ctypeses out there.
     import ctypes
     import struct
-    import os
 except ImportError:
     ctypes = None
+
+try:
+    import os
+except:
+    pass
+
 import sys
 import time
 
@@ -245,8 +250,11 @@ def _uptime_solaris():
     return None
 
 def _uptime_syllable():
-    """Returns None, on Syllable."""
-    return None
+    """Returns uptime in seconds or None, on Syllable."""
+    try:
+        return time.time() - os.stat('/dev/pty/mst/pty0').st_mtime
+    except:
+        return None
 
 def _uptime_windows():
     """
@@ -289,11 +297,13 @@ def uptime():
             'minix3': _uptime_linux,
             'riscos': _uptime_riscos,
             'sunos5': _uptime_solaris,
+            'syllable': _uptime_syllable,
             'win32': _uptime_windows,
             'wince': _uptime_windows}.get(sys.platform, _uptime_bsd)() or \
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
-           _uptime_amiga() or _uptime_riscos() or _uptime_posix()
+           _uptime_amiga() or _uptime_riscos() or _uptime_posix() or \
+           _uptime_syllable()
 
 def boottime():
     """Returns boot time if remotely possible, or None if not."""
