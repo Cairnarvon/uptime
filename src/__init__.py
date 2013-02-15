@@ -251,8 +251,10 @@ def _uptime_solaris():
 
 def _uptime_syllable():
     """Returns uptime in seconds or None, on Syllable."""
+    global __boottime
     try:
-        return time.time() - os.stat('/dev/pty/mst/pty0').st_mtime
+        __boottime = os.stat('/dev/pty/mst/pty0').st_mtime
+        return time.time() - __boottime
     except:
         return None
 
