@@ -63,8 +63,8 @@ the others on which it is therefore expected to work as well.
 +------------------+--------+--------------------------+---------------------+
 | MINIX 3.2.0      | ✓      | :func:`_uptime_linux`    |                     |
 +------------------+--------+--------------------------+---------------------+
-| OpenIndiana      | ✓      | :func:`_uptime_solaris`  | Solaris and its     |
-| 151a7            |        |                          | free knock-offs     |
+| OpenIndiana      | ✓      | :func:`_uptime_solaris`, | Solaris and its     |
+| 151a7            |        | :func:`_uptime_posix`    | free knock-offs     |
 +------------------+--------+--------------------------+---------------------+
 | Plan 9 from Bell | ✓      | :func:`_uptime_plan9`    |                     |
 | Labs, Fourth     |        |                          |                     |
