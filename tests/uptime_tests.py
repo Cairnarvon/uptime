@@ -63,6 +63,24 @@ class BrokenCtypesTest(NormalTest):
         delattr(uptime, 'struct')
         delattr(uptime, 'os')
 
+class OtherTest(unittest.TestCase):
+    def setUp(self):
+        imp.reload(uptime)
+
+    def test_equality_guarantee(self):
+        """
+        If uptime.uptime and uptime.boottime are the only functions called,
+        it is guaranteed that the uptime subtracted from the current time is
+        the reported boot time, or that both are None.
+        """
+        up = uptime.uptime()
+        if up is None:
+            self.assertTrue(uptime.boottime() is None)
+        else:
+            boot1 = time.localtime(time.time() - up)
+            boot2 = uptime.boottime()
+            self.assertTrue(boot1 == boot2)
+
 
 def run_suite(suite):
     """
@@ -118,5 +136,8 @@ if __name__ == '__main__':
     for helper in boottime_helpers:
         tests.addTests([NormalTest('test_%s' % helper),
                         BrokenCtypesTest('test_%s' % helper)])
+
+    # Other tests
+    tests.addTest(OtherTest('test_equality_guarantee'))
 
     run_suite(tests)
