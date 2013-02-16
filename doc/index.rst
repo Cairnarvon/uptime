@@ -143,6 +143,24 @@ They're documented here mainly to serve as a reference for how uptime may be
 determined on the various platform :mod:`uptime` supports, which may be of use
 to people implementing a similar library in other languages or something.
 
+Note that because boot time as a discrete point in time is poorly defined,
+platforms that are able to draw their information from multiple functions may
+provide slightly different numbers for each of them:
+
+    >>> import sys, uptime
+    >>> sys.platform
+    'linux2'
+    >>> uptime._uptime_linux() - uptime._uptime_posix()
+    11.416326000000481
+
+:func:`uptime.uptime` will always call candidate helpers in the same order,
+so calling it twice ten seconds apart will always yield results that differ by
+ten seconds. If you only call :func:`uptime.uptime` and :func:`uptime.boottime`,
+it is also always the case that subtracting the uptime as reported by
+:func:`uptime.uptime` from the current time yields the boot time as reported by
+:func:`uptime.boottime`. This is not guaranteed if you call any of the helper
+functions manually, because they may cache boot time if they come across it.
+
 
 boottime
 ^^^^^^^^
