@@ -171,6 +171,16 @@ def _uptime_mac():
     except:
         return None
 
+def _uptime_minix():
+    """Returns uptime in seconds or None, on MINIX."""
+    try:
+        f = open('/proc/uptime', 'r')
+        up = float(f.read())
+        f.close()
+        return up
+    except (IOError, ValueError):
+        return None
+
 _uptime_osx = _uptime_bsd
 
 def _uptime_plan9():
@@ -315,7 +325,7 @@ def uptime():
             'linux-armv71': _uptime_linux,
             'linux2': _uptime_linux,
             'mac': _uptime_mac,
-            'minix3': _uptime_linux,
+            'minix3': _uptime_minix,
             'riscos': _uptime_riscos,
             'sunos5': _uptime_solaris,
             'syllable': _uptime_syllable,

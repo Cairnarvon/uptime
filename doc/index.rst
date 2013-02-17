@@ -64,7 +64,7 @@ the others on which it is therefore expected to work as well.
 | Mac OS X 10.7    | ✓      | :func:`_uptime_osx`,     | Every Mac OS X      |
 | "Lion"           |        | :func:`_uptime_mac`      |                     |
 +------------------+--------+--------------------------+---------------------+
-| MINIX 3.2.0      | ✓      | :func:`_uptime_linux`    |                     |
+| MINIX 3.2.0      | ✓      | :func:`_uptime_minix`    |                     |
 +------------------+--------+--------------------------+---------------------+
 | OpenIndiana      | ✓      | :func:`_uptime_solaris`, | Solaris and its     |
 | 151a7            |        | :func:`_uptime_posix`    | free knock-offs     |
@@ -232,6 +232,17 @@ uptime
       The :mod:`MacOS` module has been removed in Python 3.x, and
       :c:func:`TickCount` has been deprecated since Mac OS X 10.8 "Mountain
       Lion". OS X users should always prefer :func:`_uptime_osx` instead.
+
+   .. versionadded:: 2.1
+
+.. function:: _uptime_minix
+
+   MINIX-specific uptime. This just reads :file:`/proc/uptime`.
+
+   (:func:`_uptime_linux` actually works fine on MINIX. This is a separate
+   function because a fallback mechanism may be added in the future for
+   versions of MINIX without `procfs`. MINIX's :file:`/proc/uptime` differs
+   from Linux's in that it only contains one number; it lacks the idle time.)
 
    .. versionadded:: 2.1
 
