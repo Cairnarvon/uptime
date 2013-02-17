@@ -59,7 +59,10 @@ the others on which it is therefore expected to work as well.
 | Icaros Desktop   | ✓      | :func:`_uptime_amiga`    | AROS, AmigaOS       |
 | 1.5.1            |        |                          |                     |
 +------------------+--------+--------------------------+---------------------+
-| Mac OS X "Lion"  | ✓      | :func:`_uptime_osx`      | Every Mac OS X      |
+| Mac OS 9.0       | ✓      | :func:`_uptime_mac`      | Every classic Mac   |
++------------------+--------+--------------------------+---------------------+
+| Mac OS X 10.7    | ✓      | :func:`_uptime_osx`,     | Every Mac OS X      |
+| "Lion"           |        | :func:`_uptime_mac`      |                     |
 +------------------+--------+--------------------------+---------------------+
 | MINIX 3.2.0      | ✓      | :func:`_uptime_linux`    |                     |
 +------------------+--------+--------------------------+---------------------+
@@ -210,6 +213,27 @@ uptime
 
    If :file:`/proc/uptime` exists, this function does not require a working
    :mod:`ctypes`.
+
+.. function:: _uptime_mac
+
+   Mac OS-specific uptime. This calls :func:`GetTickCount` from the :mod:`MacOS`
+   standard library module (which calls the :c:func:`TickCount` API function)
+   and divides the result by 60.15 to obtain the approximate uptime in seconds.
+
+   Since :c:func:`TickCount` returns an unsigned 32-bit integer, this value
+   will overflow after 826.4 days. Note that the number of ticks is only updated
+   during vertical trace interrupts. If this interrupt is ever disabled, this
+   function will return inaccurate results.
+
+   This function does not require a working :mod:`ctypes`.
+
+   .. warning::
+
+      The :mod:`MacOS` module has been removed in Python 3.x, and
+      :c:func:`TickCount` has been deprecated since Mac OS X 10.8 "Mountain
+      Lion". OS X users should always prefer :func:`_uptime_osx` instead.
+
+   .. versionadded:: 2.1
 
 .. function:: _uptime_osx
 
