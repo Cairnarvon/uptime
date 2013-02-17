@@ -33,6 +33,12 @@ except ImportError:
     pass
 
 try:
+    # Mac OS, Python <3 only.
+    import MacOS
+except ImportError:
+    pass
+
+try:
     from uptime._posix import _uptime_posix
 except ImportError:
     _uptime_posix = lambda: None
@@ -152,6 +158,18 @@ def _uptime_bsd():
     if up < 0:
         up = None
     return up
+
+def _uptime_mac():
+    """Returns uptime in seconds or None, on Mac OS."""
+    try:
+        # Python docs say a clock tick is 1/60th of a second, Mac OS docs say
+        # it's ``approximately'' 1/60th. It's incremented by vertical retraces,
+        # which the Macintosh Plus docs say happen 60.15 times per second.
+        # I don't know if ``approximately'' means it's actually 1/60.15, or
+        # 1/60 on some machines and 1/60.15 on others.
+        return MacOS.GetTicks() / 60.15
+    except:
+        return None
 
 _uptime_osx = _uptime_bsd
 
@@ -296,6 +314,7 @@ def uptime():
             'linux': _uptime_linux,
             'linux-armv71': _uptime_linux,
             'linux2': _uptime_linux,
+            'mac': _uptime_mac,
             'minix3': _uptime_linux,
             'riscos': _uptime_riscos,
             'sunos5': _uptime_solaris,
@@ -305,7 +324,7 @@ def uptime():
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
            _uptime_amiga() or _uptime_riscos() or _uptime_posix() or \
-           _uptime_syllable()
+           _uptime_syllable() or _uptime_mac()
 
 def boottime():
     """Returns boot time if remotely possible, or None if not."""
