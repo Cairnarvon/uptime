@@ -115,9 +115,9 @@ The only functions you should care about
 
     >>> from uptime import boottime
     >>> boottime()
-    time.struct_time(tm_year=2013, tm_mon=2, tm_mday=3, tm_hour=9, tm_min=11, tm_sec=42, tm_wday=6, tm_yday=34, tm_isdst=0)
+    datetime.datetime(2013, 6, 21, 16, 22, 41)
 
-   Returns the boot time as a :class:`time.struct_time`. If it can be exactly
+   Returns the boot time as a :class:`datetime.datetime`. If it can be exactly
    determined, it is; otherwise, the result of :func:`uptime.uptime` is
    subtracted from the current time. If the uptime can't be determined either,
    :const:`None` is returned.
@@ -128,7 +128,7 @@ The only functions you should care about
 Helper functions
 ----------------
 
-All of the boottime_ helper functions will return a :class:`time.struct_time`
+All of the boottime_ helper functions will return a :class:`datetime.datetime`
 instance representing the boot time or :const:`None`, same as
 :func:`uptime.boottime`. All of the uptime_ helper functions will return a
 number (probably a float) representing the uptime in seconds or :const:`None`,
