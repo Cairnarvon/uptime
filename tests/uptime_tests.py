@@ -4,6 +4,7 @@
 import imp
 import sys
 import time
+from datetime import datetime
 import unittest
 
 sys.path.insert(0, '.')
@@ -45,7 +46,7 @@ class NormalTest(unittest.TestCase):
             if func == 'uptime' or func in uptime_helpers:
                 rettypes = (type(None), float, int)
             elif func == 'boottime' or func in boottime_helpers:
-                rettypes = (type(None), time.struct_time)
+                rettypes = (type(None), datetime)
             else:
                 raise AttributeError()
             return lambda: self.basic_test(getattr(uptime, func), rettypes)

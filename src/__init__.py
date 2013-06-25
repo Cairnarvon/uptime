@@ -25,6 +25,7 @@ except:
 
 import sys
 import time
+from datetime import datetime
 
 try:
     # RISC OS only.
@@ -94,7 +95,7 @@ def _boottime_linux():
         for line in f:
             if line.startswith('btime'):
                 __boottime = int(line.split()[1])
-        return time.localtime(__boottime)
+        return datetime.fromtimestamp(__boottime)
     except:
         return None
 
@@ -345,4 +346,4 @@ def boottime():
             return None
     if __boottime is None:
         _boottime_linux()
-    return time.localtime(__boottime or time.time() - up)
+    return datetime.fromtimestamp(__boottime or time.time() - up)
