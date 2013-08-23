@@ -82,6 +82,20 @@ class OtherTest(unittest.TestCase):
             boot2 = uptime.boottime()
             self.assertTrue(boot1 == boot2)
 
+    def test_broken_datetime(self):
+        """
+        datetime was introduced in Python 2.3, and though we officially only
+        support Python 2.5+ (because of ctypes), there are some platforms that
+        only have older versions available for which we can still provide
+        meaningful answers (Plan 9, mostly).
+        Importing uptime shouldn't immediately fail for them, but calling
+        boottime and its helpers should raise a RuntimeError.
+        """
+        uptime.datetime = None
+        self.assertRaises(RuntimeError, uptime.boottime)
+        for h in boottime_helpers:
+            self.assertRaises(RuntimeError, getattr(uptime, h))
+
 
 def run_suite(suite):
     """
@@ -140,5 +154,6 @@ if __name__ == '__main__':
 
     # Other tests
     tests.addTest(OtherTest('test_equality_guarantee'))
+    tests.addTest(OtherTest('test_broken_datetime'))
 
     run_suite(tests)

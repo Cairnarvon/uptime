@@ -25,7 +25,11 @@ except ImportError:
 
 import sys
 import time
-from datetime import datetime
+
+try:
+    from datetime import datetime
+except ImportError:
+    datetime = None
 
 try:
     # RISC OS only.
@@ -97,6 +101,10 @@ def _boottime_linux():
         for line in f:
             if line.startswith('btime'):
                 __boottime = int(line.split()[1])
+
+        if datetime is None:
+            raise NotImplementedError('datetime module required.')
+
         return datetime.fromtimestamp(__boottime)
     except (IOError, IndexError):
         return None
@@ -344,10 +352,15 @@ def uptime():
 def boottime():
     """Returns boot time if remotely possible, or None if not."""
     global __boottime
+
     if __boottime is None:
         up = uptime()
         if up is None:
             return None
     if __boottime is None:
         _boottime_linux()
+
+    if datetime is None:
+        raise RuntimeError('datetime module required.')
+
     return datetime.fromtimestamp(__boottime or time.time() - up)

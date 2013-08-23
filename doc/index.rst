@@ -122,7 +122,11 @@ The only functions you should care about
    subtracted from the current time. If the uptime can't be determined either,
    :const:`None` is returned.
 
+   If the :mod:`datetime` module isn't available, this function will raise a
+   :class:`RuntimeError`.
+
    .. versionadded:: 2.0
+   .. versionchanged:: 3.0
 
 
 Helper functions
@@ -130,9 +134,10 @@ Helper functions
 
 All of the boottime_ helper functions will return a :class:`datetime.datetime`
 instance representing the boot time or :const:`None`, same as
-:func:`uptime.boottime`. All of the uptime_ helper functions will return a
-number (probably a float) representing the uptime in seconds or :const:`None`,
-same as :func:`uptime.uptime`.
+:func:`uptime.boottime`. They will also raise a :class:`RuntimeError` if the
+:mod:`datetime` module is unavailable. All of the uptime_ helper functions
+will return a number (probably a float) representing the uptime in seconds or
+:const:`None`, same as :func:`uptime.uptime`.
 
 Note that if :func:`uptime.uptime` or :func:`uptime.boottime` return
 :const:`None` for you, all of these functions will return :const:`None` as
