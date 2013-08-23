@@ -20,7 +20,7 @@ except ImportError:
 
 try:
     import os
-except:
+except ImportError:
     pass
 
 import sys
@@ -62,7 +62,9 @@ def _uptime_linux():
     # Without procfs (really?)
     try:
         libc = ctypes.CDLL('libc.so')
-    except:
+    except AttributeError:
+        return None
+    except OSError:
         # Debian and derivatives do the wrong thing because /usr/lib/libc.so
         # is a GNU ld script rather than an ELF object. To get around this, we
         # have to be more specific.
@@ -71,7 +73,7 @@ def _uptime_linux():
         # this point we're already pretty sure this isn't Linux.
         try:
             libc = ctypes.CDLL('libc.so.6')
-        except:
+        except OSError:
             return None
 
     if not hasattr(libc, 'sysinfo'):
@@ -96,7 +98,7 @@ def _boottime_linux():
             if line.startswith('btime'):
                 __boottime = int(line.split()[1])
         return datetime.fromtimestamp(__boottime)
-    except:
+    except (IOError, IndexError):
         return None
 
 def _uptime_amiga():
@@ -105,14 +107,14 @@ def _uptime_amiga():
     try:
         __boottime = os.stat('RAM:').st_ctime
         return time.time() - __boottime
-    except:
+    except (NameError, OSError):
         return None
 
 def _uptime_beos():
     """Returns uptime in seconds on None, on BeOS/Haiku."""
     try:
         libroot = ctypes.CDLL('libroot.so')
-    except:
+    except (AttributeError, OSError):
         return None
 
     if not hasattr(libroot, 'system_time'):
@@ -126,14 +128,16 @@ def _uptime_bsd():
     global __boottime
     try:
         libc = ctypes.CDLL('libc.so')
-    except:
+    except AttributeError:
+        return None
+    except OSError:
         # OS X; can't use ctypes.util.find_library because that creates
         # a new process on Linux, which is undesirable.
         try:
             libc = ctypes.CDLL('libc.dylib')
-        except:
+        except OSError:
             return None
-    
+
     if not hasattr(libc, 'sysctlbyname'):
         # Not BSD.
         return None
@@ -169,7 +173,7 @@ def _uptime_mac():
         # I don't know if ``approximately'' means it's actually 1/60.15, or
         # 1/60 on some machines and 1/60.15 on others.
         return MacOS.GetTicks() / 60.15
-    except:
+    except NameError:
         return None
 
 def _uptime_minix():
@@ -210,7 +214,7 @@ def _uptime_riscos():
             # Overflows after about eight months on 32-bit.
             return None
         return up / 100.
-    except:
+    except NameError:
         return None
 
 def _uptime_solaris():
@@ -218,7 +222,7 @@ def _uptime_solaris():
     global __boottime
     try:
         kstat = ctypes.CDLL('libkstat.so')
-    except:
+    except (AttributeError, OSError):
         return None
 
     # kstat doesn't have uptime, but it does have boot time.
@@ -284,7 +288,7 @@ def _uptime_syllable():
     try:
         __boottime = os.stat('/dev/pty/mst/pty0').st_mtime
         return time.time() - __boottime
-    except:
+    except (NameError, OSError):
         return None
 
 def _uptime_windows():
@@ -298,7 +302,7 @@ def _uptime_windows():
         try:
             # Windows CE uses the cdecl calling convention.
             lib = ctypes.CDLL('coredll.lib')
-        except:
+        except (AttributeError, OSError):
             return None
 
     if hasattr(lib, 'GetTickCount64'):

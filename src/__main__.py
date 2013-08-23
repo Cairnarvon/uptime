@@ -7,7 +7,7 @@ from uptime import *
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 if __name__ == '__main__':
