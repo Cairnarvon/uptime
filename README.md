@@ -25,7 +25,7 @@ Booted: Wed Oct 10 06:28:24 2012 CET.
 
 (You may need to use `uptime.__main__`, depending on your version of Python.)
 
-Full documentation [here](http://packages.python.org/uptime/). Works with any version of Python from 2.5 on, including Python 3.
+Full documentation [here](http://pythonhosted.org/uptime/). Works with any version of Python from 2.5 on, including Python 3.
 
 Tested on a bunch of platforms, expected to work on a bunch more. See the documentation for details.
 
