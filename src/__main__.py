@@ -37,5 +37,4 @@ if __name__ == '__main__':
 
         sys.stdout.write('Uptime: %s.\n' % ', '.join(parts))
     else:
-        boot = boottime()
-        sys.stdout.write(time.strftime('Booted: %c.\n', boot))
+        sys.stdout.write(boottime().strftime('Booted: %c.\n'))
