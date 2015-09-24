@@ -44,9 +44,10 @@ except ImportError:
     pass
 
 try:
-    from uptime._posix import _uptime_posix
+    from uptime._posix import _uptime_posix, _uptime_osx
 except ImportError:
     _uptime_posix = lambda: None
+    _uptime_osx = lambda: None
 
 __all__ = ['uptime', 'boottime']
 
@@ -193,8 +194,6 @@ def _uptime_minix():
         return up
     except (IOError, ValueError):
         return None
-
-_uptime_osx = _uptime_bsd
 
 def _uptime_plan9():
     """Returns uptime in seconds or None, on Plan 9."""
@@ -347,7 +346,7 @@ def uptime():
            _uptime_bsd() or _uptime_plan9() or _uptime_linux() or \
            _uptime_windows() or _uptime_solaris() or _uptime_beos() or \
            _uptime_amiga() or _uptime_riscos() or _uptime_posix() or \
-           _uptime_syllable() or _uptime_mac()
+           _uptime_syllable() or _uptime_mac() or _uptime_osx()
 
 def boottime():
     """Returns boot time if remotely possible, or None if not."""
